@@ -14,7 +14,7 @@
       "user" : "xiaoke",
       "host" : "47.52.28.218",
       "port" : "39999",
-      "repo" : "https://github.com/xiaoxiekeke/myblog.git",
+      "repo" : "https://github.com/xiaoxiekeke/wxnode.git",
       "ref"  : "origin/master",
       "path" : "/www/backend/wxnode",
       "ssh_options": "StrictHostKeyChecking=no",
