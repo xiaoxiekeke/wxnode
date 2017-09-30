@@ -1,0 +1,20 @@
+{
+  "name": "wx",
+  "version": "0.0.1",
+  "description": "this is my wx project wrote by nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "wx",
+    "express"
+  ],
+  "author": "xiaoke",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.1",
+    "crypto":"*"
+  }
+}
