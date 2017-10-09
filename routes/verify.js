@@ -71,24 +71,26 @@ router.get('/getWxIp', function (req, res) {
 	},function(error, response, data){
 		if (!error && response.statusCode == 200) {
       access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data.ip_list);
+		    }
+			})
     }
 	})
 
-	console.log("access_token-------",access_token)
+	
 
-	// 2、拼接成完整接口地址
-	var proxy_url='https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='+access_token;
-	request({
-		url: proxy_url,
-    method: req.method.toUpperCase(),
-    json: true,
-    body: req.body
-	},function(error, response, data){
-		if (!error && response.statusCode == 200) {
-      console.log('------接口数据------',data);
-      res.status(200).send(data.ip_list);
-    }
-	})
+	
 	
 
 });
