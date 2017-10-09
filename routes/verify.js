@@ -4,7 +4,7 @@ var crypto = require('crypto');
 var request= require('request');
 
 
-
+// 接入微信
 router.get('/', function (req, res) {
 	//1.将tampstap,nonce,token,echostr按字典序排序
 	var token='xiaoke';
@@ -22,9 +22,7 @@ router.get('/', function (req, res) {
 	var hash = crypto.createHash('sha1');
 	var sign = hash.update(arrstr).digest('hex');
 
-	console.log(sign)
-
-	// 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+	// 4、开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
 	if (signature===sign) {
 		res.status(200).send(echostr);
 	}else{
@@ -34,6 +32,8 @@ router.get('/', function (req, res) {
 });
 
 
+
+// 获取AccessToken
 router.get('/getAccessToken', function (req, res) {
 	//1.获取appId和appsecret
 	var appId="wxeee44dbd49e6139a"
@@ -54,6 +54,42 @@ router.get('/getAccessToken', function (req, res) {
       res.status(200).send(data.access_token);
     }
 	})
+
+});
+
+
+
+// 获取微信ip
+router.get('/getWxIp', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+    }
+	})
+
+	console.log("access_token-------",access_token)
+
+	// 2、拼接成完整接口地址
+	var proxy_url='https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='+access_token;
+	request({
+		url: proxy_url,
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      console.log('------接口数据------',data);
+      res.status(200).send(data.ip_list);
+    }
+	})
+	
 
 });
 
