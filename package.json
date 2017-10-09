@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.1",
-    "crypto":"*"
+    "crypto":"*",
+    "request":"*"
   }
 }

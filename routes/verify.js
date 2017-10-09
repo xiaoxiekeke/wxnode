@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
+var request= require('request');
 
 
 
@@ -29,7 +30,37 @@ router.get('/', function (req, res) {
 	}else{
 		res.send("invalid sign")
 	}
-	// res.send('Got a GET request to verify');
+
+});
+
+
+router.get('/getAccessToken', function (req, res) {
+	//1.获取appId和appsecret
+	var appId="wxeee44dbd49e6139a"
+	var appsecret="daad8a1466f76f6c6e98601d6179ec3b"
+
+	// 2、拼接成完整接口地址
+	var proxy_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appId+'&secret='+appsecret;
+
+	// 3、发送请求并返回accessToken
+	request({
+		url: proxy_url,
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      console.log('------接口数据------',data);
+      res.status(200).send(echostr);
+    }
+	})
+
+});
+
+
+//接受事件推送并回复
+router.get('/responseMsg', function (req, res) {
+	
 
 });
 	
