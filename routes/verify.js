@@ -51,7 +51,7 @@ router.get('/getAccessToken', function (req, res) {
 	},function(error, response, data){
 		if (!error && response.statusCode == 200) {
       console.log('------接口数据------',data);
-      res.status(200).send(echostr);
+      res.status(200).send(data);
     }
 	})
 
