@@ -31,6 +31,11 @@ router.get('/', function (req, res) {
 
 });
 
+//接受事件推送并回复
+router.post('/', function (req, res) {
+	
+
+});
 
 
 // 获取AccessToken
@@ -277,11 +282,7 @@ router.get('/getWxBlackList', function (req, res) {
 });
 
 
-//接受事件推送并回复
-router.post('/', function (req, res) {
-	
 
-});
 	
 
 module.exports = router;
