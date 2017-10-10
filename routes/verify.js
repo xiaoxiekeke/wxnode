@@ -34,7 +34,7 @@ router.get('/', function (req, res) {
 //接受事件推送并回复
 router.post('/', function (req, res) {
 	
-	console.log(req.body)
+	console.log(req)
 
 });
 
