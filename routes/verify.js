@@ -33,7 +33,8 @@ router.get('/', function (req, res) {
 
 //接受事件推送并回复
 router.post('/', function (req, res) {
-	
+	var postdata = HTTP_RAW_POST_DATA;
+	console.log(postdata)
 
 });
 
@@ -78,6 +79,37 @@ router.get('/getWxIp', function (req, res) {
       console.log("access_token-------",access_token)
       // 2、拼接成完整接口地址
 			var proxy_url='https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data);
+		    }
+			})
+    }
+	})
+});
+
+
+// 获取获取公共号的自动回复配置
+router.get('/getWxAutoreplyInfo', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/get_current_autoreply_info?access_token='+access_token;
 			request({
 				url: proxy_url,
 		    method: req.method.toUpperCase(),
