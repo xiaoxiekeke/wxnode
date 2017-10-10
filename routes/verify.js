@@ -56,7 +56,7 @@ router.post('/', function (req, res) {
 		// 如果签名验证通过后
 		
 		var msgtype = req.body.xml.msgtype[0].toString();
-		
+		res.set('Content-Type':'text/xml')
 
 		if (msgtype=='text') {
 			var tousername = req.body.xml.tousername[0].toString();
