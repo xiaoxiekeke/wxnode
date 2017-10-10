@@ -1,4 +1,4 @@
-###自动化部署：
+自动化部署：
 
 1、先提交到git
 
@@ -7,8 +7,12 @@
 或者直接：```npm run deploy```
 
 
+***
 
-###接口说明
+接口说明:
+
+>>>基础接口
+
 1、域名：```http://wxnode.xiaoxiekeke.com/```
 
 2、接入微信：```http://wxnode.xiaoxiekeke.com/verify```
@@ -19,6 +23,7 @@
 
 
 >>>菜单管理
+
 5、获取微信菜单：```http://wxnode.xiaoxiekeke.com/verify/getWxMenu```
 
 6、删除微信菜单：```http://wxnode.xiaoxiekeke.com/verify/delWxMenu```
