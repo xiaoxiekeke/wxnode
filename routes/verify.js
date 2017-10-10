@@ -39,6 +39,8 @@ router.post('/', function (req, res) {
 	var echostr   = req.query.echostr; 
 	var nonce     = req.query.nonce;
 
+	console.log(req)
+
 	// 2、将三个参数进行字典序排序
 	var arr=[timestamp,nonce,token];
 	arr.sort();
@@ -50,7 +52,6 @@ router.post('/', function (req, res) {
 
 	// 4、开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
 	if (signature===sign) {
-
 
 		// 如果签名验证通过后
 		
