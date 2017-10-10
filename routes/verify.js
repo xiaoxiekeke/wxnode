@@ -59,7 +59,7 @@ router.get('/getAccessToken', function (req, res) {
 
 
 
-// 获取微信ip
+// 获取微信ip列表
 router.get('/getWxIp', function (req, res) {
 	//1.获取accessToken
 	var access_token=""
@@ -87,17 +87,199 @@ router.get('/getWxIp', function (req, res) {
 			})
     }
 	})
+});
 
-	
 
-	
-	
+// 获取公共号菜单接口
+router.get('/getWxMenu', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/menu/get?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data.menu);
+		    }
+			})
+    }
+	})
+});
 
+
+// 删除微信菜单
+router.get('/delWxMenu', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/menu/get?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data);
+		    }
+			})
+    }
+	})
+});
+
+
+// 获取公众号已创建的用户标签
+router.get('/getWxTag', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/tags/get?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data.tags);
+		    }
+			})
+    }
+	})
+});
+
+
+// 获取公共号的用户列表
+router.get('/getWxUserList', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/user/get?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data);
+		    }
+			})
+    }
+	})
+});
+
+// 获取用户基本信息
+router.get('/getWxUserInfo', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+      if(!req.query.openid){
+      	res.status(200).send("请在链接上拼上用户的openid！如：http://wxnode.xiaoxiekeke.com/verify/getWxUserInfo?openid=XXX");
+      	return;
+      }
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='+access_token+'&openid='+req.query.openid;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data);
+		    }
+			})
+    }
+	})
+});
+
+// 获取公共号的用户黑名单列表
+router.get('/getWxBlackList', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data);
+		    }
+			})
+    }
+	})
 });
 
 
 //接受事件推送并回复
-router.get('/responseMsg', function (req, res) {
+router.post('/', function (req, res) {
 	
 
 });
