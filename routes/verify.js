@@ -71,7 +71,7 @@ router.post('/', function (req, res) {
 									 <Content><![CDATA[${content}]]></Content>
 								 </xml>`
 
-			res.status(200).send(xmlstr)					 
+			res.send(xmlstr)					 
 
 		}else{
 			res.send("抱歉，我们只能接受文本格式的消息")
