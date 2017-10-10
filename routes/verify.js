@@ -55,44 +55,28 @@ router.post('/', function (req, res) {
 		
 		var msgtype = req.body.xml.msgtype[0].toString();
 
-		var xmlstr=`<xml>
-    <ToUserName>
-        <![CDATA[gh_df1832ba62b3]]>
-    </ToUserName>
-    <FromUserName>
-        <![CDATA[oNEpL0TnOZiyqQqRKL64iG9vexzY]]>
-    </FromUserName>
-    <CreateTime>1507632196</CreateTime>
-    <MsgType>
-        <![CDATA[text]]>
-    </MsgType>
-    <Content>
-        <![CDATA[1]]>
-    </Content>
-</xml>`
-res.set('Content-Type','text/xml')
-		res.send(xmlstr)
+		
 
-		// if (msgtype=='text') {
-		// 	var tousername = req.body.xml.tousername[0].toString();
-		// 	var fromusername = req.body.xml.fromusername[0].toString();
-		// 	var createtime = Math.round(Date.now() / 1000);
-		// 	var content = req.body.xml.content[0].toString();
-		// 	var xmlstr=`<xml>
-		// 							 <ToUserName><![CDATA[${tousername}]]></ToUserName>
-		// 							 <FromUserName><![CDATA[${fromusername}]]></FromUserName>
-		// 							 <CreateTime>${createtime}</CreateTime>
-		// 							 <MsgType><![CDATA[${msgtype}]]></MsgType>
-		// 							 <Content><![CDATA[${content}]]></Content>
-		// 						 </xml>`
+		if (msgtype=='text') {
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = req.body.xml.content[0].toString();
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[${msgtype}]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
 
-		// 	console.log(xmlstr)
-		// 	res.set('Content-Type','text/xml')
-		// 	res.send(xmlstr)					 
+			console.log(xmlstr)
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)					 
 
-		// }else{
-		// 	res.send("抱歉，我们只能接受文本格式的消息")
-		// };
+		}else{
+			res.send("抱歉，我们只能接受文本格式的消息")
+		};
 
 	}else{
 		res.send("invalid sign")
