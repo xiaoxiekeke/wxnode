@@ -55,7 +55,7 @@ router.post('/', function (req, res) {
 		
 		var msgtype = req.body.xml.msgtype[0].toString();
 
-		
+
 
 		if (msgtype=='text') {
 			var tousername = req.body.xml.tousername[0].toString();
@@ -70,12 +70,23 @@ router.post('/', function (req, res) {
 									 <Content><![CDATA[${content}]]></Content>
 								 </xml>`
 
-			console.log(xmlstr)
 			res.set('Content-Type','text/xml')
 			res.send(xmlstr)					 
 
 		}else{
-			res.send("抱歉，我们只能接受文本格式的消息")
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "抱歉，我们只能接受文本格式的消息";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
 		};
 
 	}else{
