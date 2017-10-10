@@ -51,12 +51,11 @@ router.post('/', function (req, res) {
 	// 4、开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
 	if (signature===sign) {
 
-		console.log(req.body.xml)
 
 		// 如果签名验证通过后
 		
 		var msgtype = req.body.xml.msgtype[0].toString();
-		res.set('Content-Type','text/xml')
+		
 
 		if (msgtype=='text') {
 			var tousername = req.body.xml.tousername[0].toString();
@@ -71,6 +70,8 @@ router.post('/', function (req, res) {
 									 <Content><![CDATA[${content}]]></Content>
 								 </xml>`
 
+			console.log(xmlstr)
+			res.set('Content-Type','text/xml')
 			res.send(xmlstr)					 
 
 		}else{
