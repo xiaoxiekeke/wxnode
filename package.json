@@ -15,8 +15,9 @@
   "author": "xiaoke",
   "license": "ISC",
   "dependencies": {
+    "crypto": "*",
     "express": "^4.16.1",
-    "crypto":"*",
-    "request":"*"
+    "express-xml-bodyparser": "^0.3.0",
+    "request": "*"
   }
 }
