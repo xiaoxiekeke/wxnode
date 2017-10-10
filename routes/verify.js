@@ -51,7 +51,7 @@ router.post('/', function (req, res) {
 	// 4、开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
 	if (signature===sign) {
 
-		console.log(req.body.xml,req.body.xml.msgid)
+		console.log(req.body.xml)
 
 		// 如果签名验证通过后
 		var tousername = req.body.xml.tousername[0].toString();
