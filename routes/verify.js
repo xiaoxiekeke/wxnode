@@ -56,7 +56,7 @@ router.post('/', function (req, res) {
 		var fromusername = req.body.xml.fromusername[0].toString();
 		var createtime = req.body.xml.createtime[0].toString();
 		var msgtype = req.body.xml.msgtype[0].toString();
-		var content = req.body.xml.content[0].toString();
+		var content = "req.body.xml.content[0].toString()";
 		var msgid = req.body.xml.msgid[0].toString();
 
 		if (msgtype=='text') {
@@ -70,7 +70,7 @@ router.post('/', function (req, res) {
 								 </xml>`
 
 			res.status(200).send(xmlstr)					 
-			
+
 		}else{
 			res.send("抱歉，我们只能接受文本格式的消息")
 		};
