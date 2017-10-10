@@ -60,7 +60,7 @@ router.post('/', function (req, res) {
 		if (msgtype=='text') {
 			var tousername = req.body.xml.tousername[0].toString();
 			var fromusername = req.body.xml.fromusername[0].toString();
-			var createtime = Math.round(Date().now() / 1000);
+			var createtime = Math.round(Date.now() / 1000);
 			var content = req.body.xml.content[0].toString();
 			var xmlstr=`<xml>
 									 <ToUserName><![CDATA[${tousername}]]></ToUserName>
