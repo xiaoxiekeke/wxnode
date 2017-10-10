@@ -33,8 +33,8 @@ router.get('/', function (req, res) {
 
 //接受事件推送并回复
 router.post('/', function (req, res) {
-	var postdata = HTTP_RAW_POST_DATA;
-	console.log(postdata)
+	
+	console.log(req.body)
 
 });
 
