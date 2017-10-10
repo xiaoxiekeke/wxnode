@@ -51,10 +51,9 @@ router.get('/getAccessToken', function (req, res) {
 	},function(error, response, data){
 		if (!error && response.statusCode == 200) {
       console.log('------接口数据------',data);
-      res.status(200).send(data.access_token);
+      res.status(200).send(data);
     }
 	})
-
 });
 
 
@@ -82,7 +81,7 @@ router.get('/getWxIp', function (req, res) {
 			},function(error, response, data){
 				if (!error && response.statusCode == 200) {
 		      console.log('------接口数据------',data);
-		      res.status(200).send(data.ip_list);
+		      res.status(200).send(data);
 		    }
 			})
     }
@@ -113,7 +112,7 @@ router.get('/getWxMenu', function (req, res) {
 			},function(error, response, data){
 				if (!error && response.statusCode == 200) {
 		      console.log('------接口数据------',data);
-		      res.status(200).send(data.menu);
+		      res.status(200).send(data);
 		    }
 			})
     }
@@ -175,7 +174,7 @@ router.get('/getWxTag', function (req, res) {
 			},function(error, response, data){
 				if (!error && response.statusCode == 200) {
 		      console.log('------接口数据------',data);
-		      res.status(200).send(data.tags);
+		      res.status(200).send(data);
 		    }
 			})
     }

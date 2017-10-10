@@ -30,7 +30,7 @@
 
 8、获取公共号的用户列表：```http://wxnode.xiaoxiekeke.com/verify/getWxUserList```
 
-9、获取用户的基本信息：```http://wxnode.xiaoxiekeke.com/verify/getWxUserInfo```
+9、获取用户的基本信息：```http://wxnode.xiaoxiekeke.com/verify/getWxUserInfo?openid=XXX```
 
 10、获取用户黑名单列表：```http://wxnode.xiaoxiekeke.com/verify/getWxBlackList```
 
