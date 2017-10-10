@@ -39,8 +39,6 @@ router.post('/', function (req, res) {
 	var echostr   = req.query.echostr; 
 	var nonce     = req.query.nonce;
 
-	console.log(req)
-
 	// 2、将三个参数进行字典序排序
 	var arr=[timestamp,nonce,token];
 	arr.sort();
@@ -56,28 +54,45 @@ router.post('/', function (req, res) {
 		// 如果签名验证通过后
 		
 		var msgtype = req.body.xml.msgtype[0].toString();
-		
 
-		if (msgtype=='text') {
-			var tousername = req.body.xml.tousername[0].toString();
-			var fromusername = req.body.xml.fromusername[0].toString();
-			var createtime = Math.round(Date.now() / 1000);
-			var content = req.body.xml.content[0].toString();
-			var xmlstr=`<xml>
-									 <ToUserName><![CDATA[${tousername}]]></ToUserName>
-									 <FromUserName><![CDATA[${fromusername}]]></FromUserName>
-									 <CreateTime>${createtime}</CreateTime>
-									 <MsgType><![CDATA[${msgtype}]]></MsgType>
-									 <Content><![CDATA[${content}]]></Content>
-								 </xml>`
+		var xmlstr=`<xml>
+    <ToUserName>
+        <![CDATA[gh_df1832ba62b3]]>
+    </ToUserName>
+    <FromUserName>
+        <![CDATA[oNEpL0TnOZiyqQqRKL64iG9vexzY]]>
+    </FromUserName>
+    <CreateTime>1507632196</CreateTime>
+    <MsgType>
+        <![CDATA[text]]>
+    </MsgType>
+    <Content>
+        <![CDATA[1]]>
+    </Content>
+</xml>`
+res.set('Content-Type','text/xml')
+		res.send(xmlstr)
 
-			console.log(xmlstr)
-			res.set('Content-Type','text/xml')
-			res.send(xmlstr)					 
+		// if (msgtype=='text') {
+		// 	var tousername = req.body.xml.tousername[0].toString();
+		// 	var fromusername = req.body.xml.fromusername[0].toString();
+		// 	var createtime = Math.round(Date.now() / 1000);
+		// 	var content = req.body.xml.content[0].toString();
+		// 	var xmlstr=`<xml>
+		// 							 <ToUserName><![CDATA[${tousername}]]></ToUserName>
+		// 							 <FromUserName><![CDATA[${fromusername}]]></FromUserName>
+		// 							 <CreateTime>${createtime}</CreateTime>
+		// 							 <MsgType><![CDATA[${msgtype}]]></MsgType>
+		// 							 <Content><![CDATA[${content}]]></Content>
+		// 						 </xml>`
 
-		}else{
-			res.send("抱歉，我们只能接受文本格式的消息")
-		};
+		// 	console.log(xmlstr)
+		// 	res.set('Content-Type','text/xml')
+		// 	res.send(xmlstr)					 
+
+		// }else{
+		// 	res.send("抱歉，我们只能接受文本格式的消息")
+		// };
 
 	}else{
 		res.send("invalid sign")
