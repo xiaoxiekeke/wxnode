@@ -15,7 +15,9 @@
 
 1、域名：```http://wxnode.xiaoxiekeke.com/```
 
-2、接入微信：```http://wxnode.xiaoxiekeke.com/verify```
+2、接入微信：```http://wxnode.xiaoxiekeke.com/verify``` method="GET"
+	 
+	消息回复接口：```http://wxnode.xiaoxiekeke.com/verify``` method="POST"
 
 3、获取AccessToken:```http://wxnode.xiaoxiekeke.com/verify/getAccessToken```
 
