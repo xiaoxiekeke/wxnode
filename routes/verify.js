@@ -54,15 +54,15 @@ router.post('/', function (req, res) {
 		console.log(req.body.xml)
 
 		// 如果签名验证通过后
-		var tousername = req.body.xml.tousername[0].toString();
-		var fromusername = req.body.xml.fromusername[0].toString();
-		var createtime = req.body.xml.createtime[0].toString();
+		
 		var msgtype = req.body.xml.msgtype[0].toString();
-		var content = "req.body.xml.content[0].toString()";
-		var msgid = req.body.xml.msgid[0].toString();
+		
 
 		if (msgtype=='text') {
-
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = req.body.xml.createtime[0].toString();
+			var content = req.body.xml.content[0].toString();
 			var xmlstr=`<xml>
 									 <ToUserName><![CDATA[${tousername}]]></ToUserName>
 									 <FromUserName><![CDATA[${fromusername}]]></FromUserName>
