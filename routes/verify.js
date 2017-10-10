@@ -33,8 +33,52 @@ router.get('/', function (req, res) {
 
 //接受事件推送并回复
 router.post('/', function (req, res) {
+	var token='xiaoke';
+	var signature = req.query.signature;
+	var timestamp = req.query.timestamp;
+	var echostr   = req.query.echostr; 
+	var nonce     = req.query.nonce;
+
+	// 2、将三个参数进行字典序排序
+	var arr=[timestamp,nonce,token];
+	arr.sort();
+	var arrstr =arr.join('');
+
+	// 3、将三个参数拼接成一个字符串进行sha1加密
+	var hash = crypto.createHash('sha1');
+	var sign = hash.update(arrstr).digest('hex');
+
+	// 4、开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+	if (signature===sign) {
+
+		// 如果签名验证通过后
+		var tousername = req.body.xml.tousername[0].toString();
+		var fromusername = req.body.xml.fromusername[0].toString();
+		var createtime = req.body.xml.createtime[0].toString();
+		var msgtype = req.body.xml.msgtype[0].toString();
+		var content = req.body.xml.content[0].toString();
+		var msgid = req.body.xml.msgid[0].toString();
+
+		if (msgtype=='text') {
+
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${tousername}]]></ToUserName>
+									 <FromUserName><![CDATA[${fromusername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[${msgtype}]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+
+			res.status(200).send(xmlstr)					 
+			
+		}else{
+			res.send("抱歉，我们只能接受文本格式的消息")
+		};
+
+	}else{
+		res.send("invalid sign")
+	}
 	
-	console.log(req.body)
 
 });
 

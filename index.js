@@ -3,7 +3,7 @@ var app=express()
 var routes = require('./routes');
 var XMLParser=require('express-xml-bodyparser')
 
-
+//使用xmlparser插件解析请求体上的xml信息
 app.use(XMLParser())
 
 // 通过带有 “/static” 前缀的地址来访问 public 目录下面的文件
