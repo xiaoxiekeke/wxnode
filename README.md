@@ -23,6 +23,7 @@
 
 4、获取微信Ip地址：```http://wxnode.xiaoxiekeke.com/verify/getWxIp```
 
+5、获取微信自动回复的配置：```http://wxnode.xiaoxiekeke.com/verify/getWxAutoreplyInfo```
 
 >>>菜单管理
 

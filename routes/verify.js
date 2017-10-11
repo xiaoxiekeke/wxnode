@@ -54,8 +54,6 @@ router.post('/', function (req, res) {
 		// 如果签名验证通过后
 		var msgtype = req.body.xml.msgtype[0].toString();
 
-
-
 		if (msgtype=='text') {
 			var tousername = req.body.xml.tousername[0].toString();
 			var fromusername = req.body.xml.fromusername[0].toString();
@@ -114,7 +112,7 @@ router.get('/getAccessToken', function (req, res) {
 	},function(error, response, data){
 		if (!error && response.statusCode == 200) {
       console.log('------接口数据------',data);
-      res.status(200).send(data);
+      res.status(200).send(data.access_token);
     }
 	})
 });
@@ -152,7 +150,7 @@ router.get('/getWxIp', function (req, res) {
 });
 
 
-// 获取获取公共号的自动回复配置
+// 获取获取公共号的自动回复的配置
 router.get('/getWxAutoreplyInfo', function (req, res) {
 	//1.获取accessToken
 	var access_token=""

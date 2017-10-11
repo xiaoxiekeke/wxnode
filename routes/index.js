@@ -43,9 +43,9 @@ var funGetContentType = function (filePath) {
 
 
 module.exports = function (app) {
-	// 对网站首页的访问返回 "Hello World!" 字样
+	// 对网站首页的访问返回WebRoot中的内容
 	app.get('/', function (req, res) {
-		
+
 	});
 
 	// 网站首页接受 POST 请求
