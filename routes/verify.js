@@ -52,7 +52,6 @@ router.post('/', function (req, res) {
 	if (signature===sign) {
 
 		// 如果签名验证通过后
-		
 		var msgtype = req.body.xml.msgtype[0].toString();
 
 
