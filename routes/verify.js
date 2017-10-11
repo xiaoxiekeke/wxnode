@@ -66,15 +66,111 @@ router.post('/', function (req, res) {
 									 <MsgType><![CDATA[${msgtype}]]></MsgType>
 									 <Content><![CDATA[${content}]]></Content>
 								 </xml>`
-
 			res.set('Content-Type','text/xml')
 			res.send(xmlstr)					 
-
-		}else{
+		} else if(msgtype=='image') {
 			var tousername = req.body.xml.tousername[0].toString();
 			var fromusername = req.body.xml.fromusername[0].toString();
 			var createtime = Math.round(Date.now() / 1000);
-			var content = "抱歉，我们只能接受文本格式的消息";
+			var content = "您好，您发过来的是一张图片";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
+		} else if(msgtype=='voice') {
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "您好，您发过来的是一段语音";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
+		} else if(msgtype=='video') {
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "您好，您发过来的是一段视频";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
+		} else if(msgtype=='shortvideo') {
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "您好，您发过来的是一段短视频";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
+		} else if(msgtype=='location') {
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "您好，您发过来的是一个地理位置";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
+		} else if(msgtype=='link') {
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "您好，您发过来的是个网站链接";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
+		} else if(msgtype=='event') {
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "您好，您触发了一个事件";
+			var xmlstr=`<xml>
+									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
+									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
+									 <CreateTime>${createtime}</CreateTime>
+									 <MsgType><![CDATA[text]]></MsgType>
+									 <Content><![CDATA[${content}]]></Content>
+								 </xml>`
+			res.set('Content-Type','text/xml')
+			res.send(xmlstr)	
+		} else{
+			var tousername = req.body.xml.tousername[0].toString();
+			var fromusername = req.body.xml.fromusername[0].toString();
+			var createtime = Math.round(Date.now() / 1000);
+			var content = "抱歉，我们不能接受此类型的消息";
 			var xmlstr=`<xml>
 									 <ToUserName><![CDATA[${fromusername}]]></ToUserName>
 									 <FromUserName><![CDATA[${tousername}]]></FromUserName>
@@ -89,8 +185,6 @@ router.post('/', function (req, res) {
 	}else{
 		res.send("invalid sign")
 	}
-	
-
 });
 
 
