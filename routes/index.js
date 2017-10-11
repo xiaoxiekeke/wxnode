@@ -54,11 +54,11 @@ module.exports = function (app) {
     //使用url解析模块获取url中的路径名 
     var pathName = libUrl.parse(reqUrl).pathname;
     console.log("2、",pathName);    
-    if (libPath.extname(pathName) == "") {
-        //如果路径没有扩展名 
-        pathName += "/"; //指定访问目录 
-        console.log("3、",pathName); 
-    }
+    // if (libPath.extname(pathName) == "") {
+    //     //如果路径没有扩展名 
+    //     pathName += "/"; //指定访问目录 
+    //     console.log("3、",pathName); 
+    // }
     if (pathName.charAt(pathName.length - 1) == "/") {
         //如果访问目录 
         pathName += "index.html"; //指定为默认网页
@@ -67,7 +67,7 @@ module.exports = function (app) {
     console.log("5、",pathName);  
     
     //使用路径解析模块,组装实际文件路径 
-    var filePath = libPath.join("./WebRoot", pathName);
+    var filePath = libPath.join("/WebRoot", pathName);
     console.log("6、",filePath); 
     //判断文件是否存在 
     libFs.exists(filePath, function (exists) {
