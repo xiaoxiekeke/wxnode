@@ -7,7 +7,7 @@ var XMLParser=require('express-xml-bodyparser')
 app.use(XMLParser())
 
 // 通过带有 “/static” 前缀的地址来访问 public 目录下面的文件
-app.use('/', express.static('WebRoot'));
+app.use('/', express.static(__dirname+'/WebRoot'));
 
 
 
