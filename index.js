@@ -7,15 +7,10 @@ var XMLParser=require('express-xml-bodyparser')
 app.use(XMLParser())
 
 // 通过带有 “/static” 前缀的地址来访问 public 目录下面的文件
-app.use('/', express.static(__dirname+'/WebRoot'));
-
-
-
+app.use('/static', express.static(__dirname+'/public'));
 
 // 路由
 routes(app);
-
-
 
 // 如何处理 404 ？
 app.use(function(req, res, next) {
