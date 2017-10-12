@@ -220,7 +220,7 @@ router.get('/getAccessToken', function (req, res) {
 	const instance = {
 		readCacheFile:function(filename){
 			try {
-				return JSON.parse(fs.readFileSync(filename).toString());
+				return JSON.parse(fs.readFileSync(filename);
 			} catch (e){
 				console.log("read file %s failed: %s",filename,e)
 			}
@@ -238,13 +238,13 @@ router.get('/getAccessToken', function (req, res) {
 
   if (typeof data.expireTime === 'undefined'||typeof data.access_token === 'undefined' || data.expireTime < time) {
       const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appSecret}`;
-      request.get(url, function (err, body) {
+      request.get(url, function (err, response,body) {
           if (err) {
               res.send(err);
           }
           try {
           		console.log(body)
-              const data = JSON.parse(body.toString());
+              const data = JSON.parse(body);
 
               instance.writeCacheFile(cacheFile, {
                   expireTime: Math.round(Date.now() / 1000) + 7200,
