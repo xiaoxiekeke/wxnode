@@ -234,7 +234,8 @@ router.get('/getAccessToken', function (req, res) {
 	const cacheFile = '.accesstoken.json';
   
   const data = instance.readCacheFile(cacheFile);
-  const time = Math.round(Date.now() / 1000);
+  const time = Math.round(Date.now()/1000);
+  console.log(time)
 
   if (typeof data.expireTime === 'undefined'||typeof data.access_token === 'undefined' || data.expireTime < time) {
       const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appSecret}`;
@@ -247,7 +248,7 @@ router.get('/getAccessToken', function (req, res) {
               const data = JSON.parse(body);
 
               instance.writeCacheFile(cacheFile, {
-                  expireTime: Math.round(Date.now() / 1000) + 7200,
+                  expireTime: Math.round(Date.now()/1000) + 7200,
                   accessToken: data.access_token
               });
               res.send(data.access_token) 
