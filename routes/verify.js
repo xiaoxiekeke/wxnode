@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 var request= require('request');
+const jsSdk = require('../libs/jssdk')
 
 
 // 接入微信
@@ -155,6 +156,7 @@ router.post('/', function (req, res) {
 		} else if(msgtype=='event') {
 			var tousername = req.body.xml.tousername[0].toString();
 			var fromusername = req.body.xml.fromusername[0].toString();
+			var Event = req.body.xml.event[0].toString();
 			var createtime = Math.round(Date.now() / 1000);
 			var content = "您好，您触发了一个事件";
 			var xmlstr=`<xml>
@@ -187,6 +189,11 @@ router.post('/', function (req, res) {
 	}
 });
 
+router.get('/getJsSdk', function (req, res) {
+	jsSdk.getSignPackage('wxnode.xiaoxiekeke.com'+req.url,function(err,signPackage){
+		res.send(signPackage)
+	})
+});
 
 // 获取AccessToken
 router.get('/getAccessToken', function (req, res) {
@@ -194,21 +201,63 @@ router.get('/getAccessToken', function (req, res) {
 	var appId="wxeee44dbd49e6139a"
 	var appsecret="daad8a1466f76f6c6e98601d6179ec3b"
 
-	// 2、拼接成完整接口地址
-	var proxy_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appId+'&secret='+appsecret;
+	// // 2、拼接成完整接口地址
+	// var proxy_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appId+'&secret='+appsecret;
 
-	// 3、发送请求并返回accessToken
-	request({
-		url: proxy_url,
-    method: req.method.toUpperCase(),
-    json: true,
-    body: req.body
-	},function(error, response, data){
-		if (!error && response.statusCode == 200) {
-      console.log('------接口数据------',data);
-      res.status(200).send(data.access_token);
-    }
-	})
+	// // 3、发送请求并返回accessToken
+	// request({
+	// 	url: proxy_url,
+ //    method: req.method.toUpperCase(),
+ //    json: true,
+ //    body: req.body
+	// },function(error, response, data){
+	// 	if (!error && response.statusCode == 200) {
+ //      console.log('------接口数据------',data);
+ //      res.status(200).send(data.access_token);
+ //    }
+	// })
+	const instance = {
+		readCacheFile:function(filename){
+			try {
+				return JSON.parse(fs.readFileSync(filename));
+			} catch (e){
+				console.log("read file %s failed: %s",filename,e)
+			}
+			return {}
+		},
+		writeCacheFile:function(filename,data){
+			return fs.writeFileSync(filenamem,JSON.stringify(data));
+		}
+	}
+	
+	const cacheFile = '.accesstoken.json';
+  
+  const data = instance.readCacheFile(cacheFile);
+  const time = Math.round(Date.now() / 1000);
+
+  if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
+      const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`;
+      request.get(url, function (err, res, body) {
+          if (err) {
+              return done(err, null);
+          }
+          try {
+              const data = JSON.parse(body);
+
+              instance.writeCacheFile(cacheFile, {
+                  expireTime: Math.round(Date.now() / 1000) + 7200,
+                  accessToken: data.access_token,
+              });
+              return data.access_token
+              // done(null, data.access_token);
+          } catch (e) {
+              done(e, null);
+          }
+      });
+  } else {
+      // done(null, data.accessToken);
+      return data.access_token
+  }
 });
 
 
