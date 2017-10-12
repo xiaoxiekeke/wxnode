@@ -249,7 +249,7 @@ router.get('/getAccessToken', function (req, res) {
 
               instance.writeCacheFile(cacheFile, {
                   expireTime: Math.round(Date.now() / 1000) + 7200,
-                  accessToken: data.access_token,
+                  accessToken: data.access_token
               });
               res.send(data.access_token) 
               // done(null, data.access_token);
