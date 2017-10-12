@@ -56,7 +56,7 @@ JSSDK.prototype={
 							expireTime:Math.round(Date.now() / 1000) +7200,
 							jsApiTicket: data.ticket
 						})
-						
+
 						done(null,data.ticket)
 					}catch(e){
 						done(e,null)
@@ -117,7 +117,7 @@ JSSDK.prototype={
 		return {}
 	},
 	writeCacheFile:function(filename,data){
-		return fs.writeFileSync(filenamem,JSON.stringify(data));
+		return fs.writeFileSync(filename,JSON.stringify(data));
 	},
 }
 
