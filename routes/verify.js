@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 var request= require('request');
+var fs = require('fs');
 const jsSdk = require('../libs/jssdk')
 
 
@@ -233,6 +234,7 @@ router.get('/getAccessToken', function (req, res) {
 	const cacheFile = '.accesstoken.json';
   
   const data = instance.readCacheFile(cacheFile);
+  console.log(data)
   const time = Math.round(Date.now() / 1000);
 
   if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
