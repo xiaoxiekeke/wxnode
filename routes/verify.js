@@ -200,7 +200,7 @@ router.get('/getJsSdk', function (req, res) {
 router.get('/getAccessToken', function (req, res) {
 	//1.获取appId和appsecret
 	var appId="wxeee44dbd49e6139a"
-	var appsecret="daad8a1466f76f6c6e98601d6179ec3b"
+	var appSecret="daad8a1466f76f6c6e98601d6179ec3b"
 
 	// // 2、拼接成完整接口地址
 	// var proxy_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appId+'&secret='+appsecret;
