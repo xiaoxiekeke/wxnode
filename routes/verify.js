@@ -227,7 +227,7 @@ router.get('/getAccessToken', function (req, res) {
 			return {}
 		},
 		writeCacheFile:function(filename,data){
-			return fs.writeFileSync(filenamem,JSON.stringify(data));
+			return fs.writeFileSync(filename,JSON.stringify(data));
 		}
 	}
 	
