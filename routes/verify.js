@@ -239,7 +239,7 @@ router.get('/getAccessToken', function (req, res) {
       const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`;
       request.get(url, function (err, res, body) {
           if (err) {
-              return done(err, null);
+              res.send(err);
           }
           try {
               const data = JSON.parse(body);
@@ -248,15 +248,15 @@ router.get('/getAccessToken', function (req, res) {
                   expireTime: Math.round(Date.now() / 1000) + 7200,
                   accessToken: data.access_token,
               });
-              return data.access_token
+              res.send(data.access_token) 
               // done(null, data.access_token);
           } catch (e) {
-              done(e, null);
+              console.log(e);
           }
       });
   } else {
       // done(null, data.accessToken);
-      return data.access_token
+      res.send(data.accessToken) 
   }
 });
 
