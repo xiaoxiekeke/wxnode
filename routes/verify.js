@@ -220,7 +220,6 @@ router.get('/getAccessToken', function (req, res) {
 	const instance = {
 		readCacheFile:function(filename){
 			try {
-				console.log(fs.readFileSync(filename).toString())
 				return JSON.parse(fs.readFileSync(filename).toString());
 			} catch (e){
 				console.log("read file %s failed: %s",filename,e)
@@ -235,7 +234,6 @@ router.get('/getAccessToken', function (req, res) {
 	const cacheFile = '.accesstoken.json';
   
   const data = instance.readCacheFile(cacheFile);
-  console.log(data)
   const time = Math.round(Date.now() / 1000);
 
   if (typeof data.expireTime === 'undefined'||typeof data.access_token === 'undefined' || data.expireTime < time) {
@@ -245,7 +243,8 @@ router.get('/getAccessToken', function (req, res) {
               res.send(err);
           }
           try {
-              const data = JSON.parse(body);
+          		console.log(body)
+              const data = JSON.parse(body.toString());
 
               instance.writeCacheFile(cacheFile, {
                   expireTime: Math.round(Date.now() / 1000) + 7200,
