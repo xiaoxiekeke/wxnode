@@ -220,8 +220,8 @@ router.get('/getAccessToken', function (req, res) {
 	const instance = {
 		readCacheFile:function(filename){
 			try {
-				console.log(fs.readFileSync(filename))
-				return JSON.parse(fs.readFileSync(filename));
+				console.log(fs.readFileSync(filename).toString())
+				return JSON.parse(fs.readFileSync(filename).toString());
 			} catch (e){
 				console.log("read file %s failed: %s",filename,e)
 			}
