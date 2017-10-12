@@ -239,7 +239,7 @@ router.get('/getAccessToken', function (req, res) {
 
   if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
       const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`;
-      request.get(url, function (err, res, body) {
+      request.get(url, function (err, body) {
           if (err) {
               res.send(err);
           }
