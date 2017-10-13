@@ -39,11 +39,7 @@ JSSDK.prototype={
 		const data=this.readCacheFile(cacheFile);
 		const time=Math.round(Date.now() / 1000);
 		const instance =this;
-		console.log("1、")
-		console.log(data)
 		if(typeof data.expireTime === 'undefined' || data.expireTime < time){
-			console.log("2、")
-	    console.log(data)
 			instance.getAccessToken(function(error,accessToken){
 				if(error){
 					return done(error,null)
@@ -56,8 +52,6 @@ JSSDK.prototype={
 
 					try {
 						const data =JSON.parse(body);
-						console.log("7、")
-				    console.log(data)
 						instance.writeCacheFile(cacheFile,{
 							expireTime: Math.round(Date.now() / 1000) +7200,
 							jsApiTicket: data.ticket
@@ -71,8 +65,6 @@ JSSDK.prototype={
 				})
 			})
 		}else{
-			console.log("3、")
-	    console.log(data)
 			done(null,data.jsApiTicket)
 		}
 
