@@ -191,7 +191,9 @@ router.post('/', function (req, res) {
 });
 
 router.get('/getJsSdk', function (req, res) {
-	jsSdk.getSignPackage('wxnode.xiaoxiekeke.com'+req.url,function(err,signPackage){
+	console.log(req.url)
+	jsSdk.getSignPackage('http://wxnode.xiaoxiekeke.com'+req.url,function(err,signPackage){
+
 		res.send(signPackage)
 	})
 });
