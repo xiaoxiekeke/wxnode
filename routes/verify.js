@@ -191,9 +191,7 @@ router.post('/', function (req, res) {
 });
 
 router.get('/getJsSdk', function (req, res) {
-	console.log(req)
 	jsSdk.getSignPackage('http://wxnode.xiaoxiekeke.com/verify'+req.url,function(err,signPackage){
-		console.log(err)
 		res.send(signPackage)
 	})
 });
@@ -219,47 +217,58 @@ router.get('/getAccessToken', function (req, res) {
  //      res.status(200).send(data.access_token);
  //    }
 	// })
-	const instance = {
-		readCacheFile:function(filename){
-			try {
-				return JSON.parse(fs.readFileSync(filename));
-			} catch (e){
-				console.log("read file %s failed: %s",filename,e)
-			}
-			return {}
-		},
-		writeCacheFile:function(filename,data){
-			return fs.writeFileSync(filename,JSON.stringify(data));
-		}
-	}
-	
-	const cacheFile = '.accesstoken.json';
-  
-  const data = instance.readCacheFile(cacheFile);
-  const time = Math.round(Date.now()/1000);
-  if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
-      const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appSecret}`;
-      request.get(url, function (err, response,body) {
-          if (err) {
-              res.send(err);
-          }
-          try {
-              const data = JSON.parse(body);
 
-              instance.writeCacheFile(cacheFile, {
-                  expireTime: Math.round(Date.now()/1000) + 7200,
-                  accessToken: data.access_token
-              });
-              res.send(data.access_token) 
-              // done(null, data.access_token);
-          } catch (e) {
-              console.log(e);
-          }
-      });
-  } else {
-      // done(null, data.accessToken);
-      res.send(data.accessToken) 
-  }
+
+	// const instance = {
+	// 	readCacheFile:function(filename){
+	// 		try {
+	// 			return JSON.parse(fs.readFileSync(filename));
+	// 		} catch (e){
+	// 			console.log("read file %s failed: %s",filename,e)
+	// 		}
+	// 		return {}
+	// 	},
+	// 	writeCacheFile:function(filename,data){
+	// 		return fs.writeFileSync(filename,JSON.stringify(data));
+	// 	}
+	// }
+	
+	// const cacheFile = '.accesstoken.json';
+  
+ //  const data = instance.readCacheFile(cacheFile);
+ //  const time = Math.round(Date.now()/1000);
+ //  if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
+ //      const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appSecret}`;
+ //      request.get(url, function (err, response,body) {
+ //          if (err) {
+ //              res.send(err);
+ //          }
+ //          try {
+ //              const data = JSON.parse(body);
+
+ //              instance.writeCacheFile(cacheFile, {
+ //                  expireTime: Math.round(Date.now()/1000) + 7200,
+ //                  accessToken: data.access_token
+ //              });
+ //              res.send(data.access_token) 
+ //              // done(null, data.access_token);
+ //          } catch (e) {
+ //              console.log(e);
+ //          }
+ //      });
+ //  } else {
+ //      // done(null, data.accessToken);
+ //      res.send(data.accessToken) 
+ //  }
+
+ jsSdk.getAccessToken(function(err,accessToken){
+ 		if(error){
+			res.send(error);
+			return;
+		}
+		res.send(accessToken)
+ })
+
 });
 
 
