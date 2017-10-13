@@ -14,8 +14,6 @@ JSSDK.prototype={
 			if(err){
 				return done(err)
 			}
-			console.log("8、")
-			console.log(jsApiTicket)
 
 			const timestamp = Math.round(Date.now() / 1000)
 			const noncestr = instance.createNonceStr()
