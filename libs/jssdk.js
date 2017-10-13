@@ -58,7 +58,7 @@ JSSDK.prototype={
 						const data =JSON.parse(body);
 						console.log("7、")
 				    console.log(data)
-						instance.writeFileSync(cacheFile,{
+						instance.writeCacheFile(cacheFile,{
 							expireTime: Math.round(Date.now() / 1000) +7200,
 							jsApiTicket: data.ticket
 						})
