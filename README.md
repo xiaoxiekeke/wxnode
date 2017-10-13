@@ -19,9 +19,6 @@
 	 
 	消息回复接口：```http://wxnode.xiaoxiekeke.com/verify``` method="POST"
 
-	获取JS-SDK使用权限：```http://wxnode.xiaoxiekeke.com/verify/getJsSdk```
-
-
 3、获取AccessToken:```http://wxnode.xiaoxiekeke.com/verify/getAccessToken```
 
 4、获取微信Ip地址：```http://wxnode.xiaoxiekeke.com/verify/getWxIp```
@@ -46,5 +43,9 @@
 10、获取用户黑名单列表：```http://wxnode.xiaoxiekeke.com/verify/getWxBlackList```
 
 
+>>>JSSDK
 
+11、获取JS-SDK使用权限：```http://wxnode.xiaoxiekeke.com/verify/getJsSdk```
+
+12、检验是否成功获取jssdk权限：```http://wxnode.xiaoxiekeke.com/wxWeb/index.html```
 
