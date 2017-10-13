@@ -27,25 +27,27 @@
 
 >>>菜单管理
 
-5、获取微信菜单：```http://wxnode.xiaoxiekeke.com/verify/getWxMenu```
+5、设置微信菜单：```http://wxnode.xiaoxiekeke.com/verify/setWxMenu```
 
-6、删除微信菜单：```http://wxnode.xiaoxiekeke.com/verify/delWxMenu```
+6、获取微信菜单：```http://wxnode.xiaoxiekeke.com/verify/getWxMenu```
+
+7、删除微信菜单：```http://wxnode.xiaoxiekeke.com/verify/delWxMenu```
 
 
 >>>用户管理
 
-7、获取公众号已创建的用户标签：```http://wxnode.xiaoxiekeke.com/verify/getWxTag```
+8、获取公众号已创建的用户标签：```http://wxnode.xiaoxiekeke.com/verify/getWxTag```
 
-8、获取公共号的用户列表：```http://wxnode.xiaoxiekeke.com/verify/getWxUserList```
+9、获取公共号的用户列表：```http://wxnode.xiaoxiekeke.com/verify/getWxUserList```
 
-9、获取用户的基本信息：```http://wxnode.xiaoxiekeke.com/verify/getWxUserInfo?openid=XXX```
+10、获取用户的基本信息：```http://wxnode.xiaoxiekeke.com/verify/getWxUserInfo?openid=XXX```
 
-10、获取用户黑名单列表：```http://wxnode.xiaoxiekeke.com/verify/getWxBlackList```
+11、获取用户黑名单列表：```http://wxnode.xiaoxiekeke.com/verify/getWxBlackList```
 
 
 >>>JSSDK
 
-11、获取JS-SDK使用权限：```http://wxnode.xiaoxiekeke.com/verify/getJsSdk```
+12、获取JS-SDK使用权限：```http://wxnode.xiaoxiekeke.com/verify/getJsSdk```
 
-12、检验是否成功获取jssdk权限：```http://wxnode.xiaoxiekeke.com/wxWeb/index.html```
+13、检验是否成功获取jssdk权限：```http://wxnode.xiaoxiekeke.com/wxWeb/index.html```
 

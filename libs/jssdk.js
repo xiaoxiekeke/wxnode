@@ -17,9 +17,7 @@ JSSDK.prototype={
 
 			const timestamp = Math.round(Date.now() / 1000)
 			const noncestr = instance.createNonceStr()
-
 			const rawString = `jsapi_ticket=${jsApiTicket}&noncestr=${noncestr}&timestamp=${timestamp}&url=${url}`
-			console.log(rawString)
 			const hash = crypto.createHash('sha1');
 			const signature = hash.update(rawString).digest('hex');
 

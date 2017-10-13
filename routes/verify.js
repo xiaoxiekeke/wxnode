@@ -198,69 +198,6 @@ router.get('/getJsSdk', function (req, res) {
 
 // 获取AccessToken
 router.get('/getAccessToken', function (req, res) {
-	//1.获取appId和appsecret
-	// var appId="wxeee44dbd49e6139a"
-	// var appSecret="daad8a1466f76f6c6e98601d6179ec3b"
-
-	// // 2、拼接成完整接口地址
-	// var proxy_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+appId+'&secret='+appsecret;
-
-	// // 3、发送请求并返回accessToken
-	// request({
-	// 	url: proxy_url,
- //    method: req.method.toUpperCase(),
- //    json: true,
- //    body: req.body
-	// },function(error, response, data){
-	// 	if (!error && response.statusCode == 200) {
- //      console.log('------接口数据------',data);
- //      res.status(200).send(data.access_token);
- //    }
-	// })
-
-
-
-	// const instance = {
-	// 	readCacheFile:function(filename){
-	// 		try {
-	// 			return JSON.parse(fs.readFileSync(filename));
-	// 		} catch (e){
-	// 			console.log("read file %s failed: %s",filename,e)
-	// 		}
-	// 		return {}
-	// 	},
-	// 	writeCacheFile:function(filename,data){
-	// 		return fs.writeFileSync(filename,JSON.stringify(data));
-	// 	}
-	// }
-	
-	// const cacheFile = '.accesstoken.json';
-  
- //  const data = instance.readCacheFile(cacheFile);
- //  const time = Math.round(Date.now()/1000);
- //  if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
- //      const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appId}&secret=${appSecret}`;
- //      request.get(url, function (err, response,body) {
- //          if (err) {
- //              res.send(err);
- //          }
- //          try {
- //              const data = JSON.parse(body);
-
- //              instance.writeCacheFile(cacheFile, {
- //                  expireTime: Math.round(Date.now()/1000) + 7200,
- //                  accessToken: data.access_token
- //              });
- //              res.send(data.access_token) 
- //              // done(null, data.access_token);
- //          } catch (e) {
- //              console.log(e);
- //          }
- //      });
- //  } else {
- //      // done(null, data.accessToken);
- //      res.send(data.accessToken) 
- //  }
 
  jsSdk.getAccessToken(function(err,accessToken){
  		if(err){
@@ -366,6 +303,35 @@ router.get('/getWxMenu', function (req, res) {
 	})
 });
 
+// 设置公共号菜单接口
+router.post('/setWxMenu', function (req, res) {
+	//1.获取accessToken
+	var access_token=""
+	request({
+		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
+    method: req.method.toUpperCase(),
+    json: true,
+    body: req.body
+	},function(error, response, data){
+		if (!error && response.statusCode == 200) {
+      access_token=data;
+      console.log("access_token-------",access_token)
+      // 2、拼接成完整接口地址
+			var proxy_url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='+access_token;
+			request({
+				url: proxy_url,
+		    method: req.method.toUpperCase(),
+		    json: true,
+		    body: req.body
+			},function(error, response, data){
+				if (!error && response.statusCode == 200) {
+		      console.log('------接口数据------',data);
+		      res.status(200).send(data);
+		    }
+			})
+    }
+	})
+});
 
 // 删除微信菜单
 router.get('/delWxMenu', function (req, res) {
