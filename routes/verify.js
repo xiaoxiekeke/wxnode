@@ -262,7 +262,7 @@ router.get('/getAccessToken', function (req, res) {
  //  }
 
  jsSdk.getAccessToken(function(err,accessToken){
- 		if(error){
+ 		if(err){
 			res.send(error);
 			return;
 		}
