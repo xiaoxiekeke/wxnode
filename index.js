@@ -2,10 +2,19 @@ var express=require("express")
 var app=express()
 var routes = require('./routes');
 var XMLParser=require('express-xml-bodyparser')
+var bodyParser = require('body-parser')
+// create application/json parser
+var jsonParser = bodyParser.json()
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 
 //使用xmlparser插件解析请求体上的xml信息
 app.use(XMLParser())
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
