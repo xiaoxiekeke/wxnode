@@ -309,7 +309,7 @@ router.post('/setWxMenu', function (req, res) {
 	var access_token=""
 	request({
 		url: 'http://wxnode.xiaoxiekeke.com/verify/getAccessToken',
-    method: req.method.toUpperCase(),
+    method: 'GET',
     json: true,
     body: req.body
 	},function(error, response, data){
