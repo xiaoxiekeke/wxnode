@@ -313,6 +313,7 @@ router.post('/setWxMenu', function (req, res) {
     json: true,
     body: req.body
 	},function(error, response, data){
+		console.log(req.body)
 		if (!error && response.statusCode == 200) {
       access_token=data;
       console.log("access_token-------",access_token)
