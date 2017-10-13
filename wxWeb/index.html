@@ -10,6 +10,9 @@
 		$.ajax({
 			type:'get',
 			url:"http://wxnode.xiaoxiekeke.com/verify/getJsSdk",
+      data: {
+        url: '' + window.location.href.split('#')[0]
+      },
 			contentType: "application/json",
 			success:function(data){
 				wx.config({

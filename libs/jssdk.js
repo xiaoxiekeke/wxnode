@@ -10,7 +10,6 @@ function JSSDK(appId,appSecret){
 JSSDK.prototype={
 	getSignPackage:function(url,done){
 		const instance=this
-
 		this.getJsApiTicket(function(err,jsApiTicket){
 			if(err){
 				return done(err)
