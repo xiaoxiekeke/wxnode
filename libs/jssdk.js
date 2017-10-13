@@ -15,6 +15,8 @@ JSSDK.prototype={
 			if(err){
 				return done(err)
 			}
+			console.log("8、")
+			console.log(jsApiTicket)
 
 			const timestamp = Math.round(Date.now() / 1000)
 			const noncestr = this.createNonceStr()
@@ -57,7 +59,7 @@ JSSDK.prototype={
 						console.log("7、")
 				    console.log(data)
 						instance.writeFileSync(cacheFile,{
-							expireTime:Math.round(Date.now() / 1000) +7200,
+							expireTime: Math.round(Date.now() / 1000) +7200,
 							jsApiTicket: data.ticket
 						})
 
@@ -90,8 +92,6 @@ JSSDK.prototype={
     const instance = this;
     const data = instance.readCacheFile(cacheFile);
     const time = Math.round(Date.now() / 1000);
-    console.log("4、")
-    console.log(data)
 
     if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
         const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`;
@@ -101,8 +101,6 @@ JSSDK.prototype={
             }
             try {
                 const data = JSON.parse(body);
-                console.log("5、")
-                console.log(data)
                 instance.writeCacheFile(cacheFile, {
                     expireTime: Math.round(Date.now() / 1000) + 7200,
                     accessToken: data.access_token,
@@ -114,8 +112,6 @@ JSSDK.prototype={
             }
         });
     } else {
-    	console.log("6、")
-    	console.log(data)
         done(null, data.accessToken);
     }
 	},
