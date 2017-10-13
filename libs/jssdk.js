@@ -37,8 +37,9 @@ JSSDK.prototype={
 		const data=this.readCacheFile(cacheFile);
 		const time=Math.round(Date.now() / 1000);
 		const instance =this;
-
+		console.log("1、"+data)
 		if(typeof data.expireTime === 'undefined' || data.expireTime < time){
+
 			instance.getAccessToken(function(error,accessToken){
 				if(error){
 					return done(error,null)
@@ -84,6 +85,7 @@ JSSDK.prototype={
     const instance = this;
     const data = instance.readCacheFile(cacheFile);
     const time = Math.round(Date.now() / 1000);
+    console.log("2、"+data)
 
     if (typeof data.expireTime === 'undefined' || data.expireTime < time) {
         const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`;
@@ -93,7 +95,7 @@ JSSDK.prototype={
             }
             try {
                 const data = JSON.parse(body);
-
+                console.log("3、"+data)
                 instance.writeCacheFile(cacheFile, {
                     expireTime: Math.round(Date.now() / 1000) + 7200,
                     accessToken: data.access_token,
