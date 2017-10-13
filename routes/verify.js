@@ -323,7 +323,7 @@ router.post('/setWxMenu', function (req, res) {
 				url: proxy_url,
 		    method: req.method.toUpperCase(),
 		    json: true,
-		    form: req.query
+		    form: req.body
 			},function(error, response, data){
 				if (!error && response.statusCode == 200) {
 		      console.log('------接口数据------',data);
