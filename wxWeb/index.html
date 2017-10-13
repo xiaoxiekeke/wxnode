@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title>js-sdk</title>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+	;(function($){
+		$.ajax({
+			type:'get',
+			url:"http://wxnode.xiaoxiekeke.com/verify/getJsSdk",
+			contentType: "application/json",
+			success:function(data){
+				wx.config({
+            debug: false,
+            appId: data.appId, //dev环境appId：wx6144834c1ba761d2;sit:wx8c050b73a1102e47;uat-bak:wx457f690cd95235c1;uat:wx87c20f1ea289cb3d;prod:wxaabb0ed653a386d3;
+            timestamp: data.timestamp,
+            nonceStr: data.nonceStr,
+            signature: data.signature,
+            jsApiList: ['showMenuItems','onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ'] //功能列表，我们要使用JS-SDK的什么功能
+        });
+        wx.ready(function() {
+        	wx.showMenuItems({
+              menuList: ['menuItem:share:appMessage' , 'menuItem:share:timeline' ,'menuItem:share:qq'] // 要显示的菜单项，所有menu项见附录3
+          });
+          wx.onMenuShareTimeline({
+            title: shareTitle, // 分享标题
+            desc: shareDescription, // 分享描述
+            link: shareUrl, // 分享链接
+            imgUrl: shareImg, // 分享图标
+            success: function () { 
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () { 
+                // 用户取消分享后执行的回调函数
+            }
+          });
+        })
+			},
+			error:function(err){
+        console.log(err);
+      }
+		})
+	})(jQuery);
+</script>
+</body>
+
+</html>

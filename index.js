@@ -18,6 +18,7 @@ app.all('*', function(req, res, next) {
 
 // 通过带有 “/public 前缀的地址来访问 public 目录下面的文件
 app.use('/', express.static(__dirname+'/WebRoot'));
+app.use('/wxWeb', express.static(__dirname+'/wxWeb'));
 app.use('/public', express.static(__dirname+'/public'));
 
 // 路由
