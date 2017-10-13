@@ -192,7 +192,7 @@ router.post('/', function (req, res) {
 
 router.get('/getJsSdk', function (req, res) {
 	console.log('http://wxnode.xiaoxiekeke.com/verify:')
-	console/log(req.query)
+	console.log(req.query)
 	jsSdk.getSignPackage(req.query.url,function(err,signPackage){
 		res.send(signPackage)
 	})
