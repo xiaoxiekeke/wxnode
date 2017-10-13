@@ -46,7 +46,7 @@ JSSDK.prototype={
 				if(error){
 					return done(error,null)
 				}
-				const url=`https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=${accessToken}`
+				const url=`https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=${accessToken}`
 				request.get(url,function(err,res,body){
 					if (err) {
 						return done(err,null)
