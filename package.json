@@ -19,6 +19,9 @@
     "crypto": "*",
     "express": "^4.16.1",
     "express-xml-bodyparser": "^0.3.0",
-    "request": "*"
+    "fs": "0.0.1-security",
+    "mongoose": "^5.0.14",
+    "request": "*",
+    "sha1": "^1.1.1"
   }
 }

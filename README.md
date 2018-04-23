@@ -27,7 +27,7 @@
 
 >>>菜单管理
 
-5、设置微信菜单：```http://wxnode.xiaoxiekeke.com/verify/setWxMenu```
+5、设置微信菜单：```http://wxnode.xiaoxiekeke.com/verify/setWxMenu?access_token=ACCESS_TOKEN``` method="POST"
 
 6、获取微信菜单：```http://wxnode.xiaoxiekeke.com/verify/getWxMenu```
 
