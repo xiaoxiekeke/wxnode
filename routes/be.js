@@ -39,25 +39,25 @@ router.post('/login', function (req, res) {
     // on resolve
     if (!result) {//没有的话创建
       //创建Entity：由Model创建的实体，使用save方法保存数据
-      admin = new Admin({
-        userName:username,
-        passWord:password
-      })
-      admin.save(function(err,doc){
-      	if(err) {
-        	console.log(err);
-    	  	res.status(200).send({
-    				result:errConfig.serverErr
-    			});
-	    	} else {
-	        res.status(200).send({
-	    			result:errConfig.success,
-	    			data:{
-	    				accessToken:doc
-	    			}
-	    		});
-	    	}
-      })
+      // admin = new Admin({
+      //   userName:username,
+      //   passWord:password
+      // })
+      // admin.save(function(err,doc){
+      // 	if(err) {
+      //   	console.log(err);
+    	 //  	res.status(200).send({
+    		// 		result:errConfig.serverErr
+    		// 	});
+	    	// } else {
+	     //    res.status(200).send({
+	    	// 		result:errConfig.success,
+	    	// 		data:{
+	    	// 			accessToken:doc
+	    	// 		}
+	    	// 	});
+	    	// }
+      // })
       res.status(200).send({
   			result:{
   				success:false,
