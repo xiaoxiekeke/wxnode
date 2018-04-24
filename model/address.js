@@ -11,6 +11,7 @@ var AddressSchema = new mongoose.Schema({
   top:Number,
   dialogTypes:Number,
   price:Number,
+  remarks:String,
   meta: {
     createAt: {
       type: Date,

@@ -7,6 +7,7 @@ var ObjectId = Schema.Types.ObjectId
 var ResultSchema = new mongoose.Schema({
   cArr:[String],
   name:String,
+  remarks:String,
   meta: {
     createAt: {
       type: Date,

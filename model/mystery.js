@@ -8,6 +8,7 @@ var mysterySchema = new mongoose.Schema({
   image:String,
   name:String,
   price:Number,
+  remarks:String,
   meta: {
     createAt: {
       type: Date,

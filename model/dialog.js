@@ -17,6 +17,7 @@ var DialogSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'Role'
   },
+  remarks:String,
   meta: {
     createAt: {
       type: Date,

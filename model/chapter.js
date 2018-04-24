@@ -17,6 +17,7 @@ var ChapterSchema = new mongoose.Schema({
   addressId:String,
   addressIdAdd:String,
   addressIdRemove:String,
+  remarks:String,
   meta: {
     createAt: {
       type: Date,

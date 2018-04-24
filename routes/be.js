@@ -289,8 +289,9 @@ router.post('/address/update', middleware.hasToken,function (req, res) {
 	var top = req.body.top;
 	var price = req.body.price
 	var dialogTypes = req.body.dialogTypes
+	var remarks = req.body.remarks
 	if(id){//修改
-		Address.findByIdAndUpdate(id,{name:name,isActive:isActive,left:left,top:top,price:price,dialogTypes:dialogTypes},function(err,doc){
+		Address.findByIdAndUpdate(id,{name:name,isActive:isActive,left:left,top:top,price:price,dialogTypes:dialogTypes,remarks:remarks},function(err,doc){
     	if(err) {
       	console.log(err);
   	  	res.status(200).send({
@@ -312,7 +313,8 @@ router.post('/address/update', middleware.hasToken,function (req, res) {
       left:left,
       top:top,
       price:price,
-      dialogTypes:dialogTypes
+      dialogTypes:dialogTypes,
+      remarks:remarks
     })
     address.save(function(err,doc){
     	if(err) {
@@ -477,9 +479,10 @@ router.post('/role/update', middleware.hasToken,function (req, res) {
 	var image = req.body.image;
 	var name = req.body.name;
 	var id = req.body.id;
+	var remarks = req.body.remarks
 	if(id){//修改
 		console.log(id)
-    Role.findByIdAndUpdate(id,{image:image,name:name},function(err,doc){
+    Role.findByIdAndUpdate(id,{image:image,name:name,remarks:remarks},function(err,doc){
     	if(err) {
       	console.log(err);
   	  	res.status(200).send({
@@ -497,7 +500,8 @@ router.post('/role/update', middleware.hasToken,function (req, res) {
 	}else{//新增
 		var role = new Role({
       image:image,
-      name:name
+      name:name,
+      remarks:remarks
     })
     role.save(function(err,doc){
     	if(err) {
@@ -721,6 +725,7 @@ router.post('/chapter/update', middleware.hasToken,function (req, res) {
 	var addressIdAdd = req.body.addressIdAdd;
 	var eventId = req.body.eventId;
 	var eventFinish = req.body.eventFinish;
+	var remarks = req.body.remarks
 	var params={
       	content:content,
       	price:price,
@@ -733,7 +738,8 @@ router.post('/chapter/update', middleware.hasToken,function (req, res) {
       	addressIdRemove:addressIdRemove,
       	addressIdAdd:addressIdAdd,
       	eventId:eventId,
-      	eventFinish:eventFinish
+      	eventFinish:eventFinish,
+      	remarks:remarks
       };
 	if(accessToken){
 		if(id){//修改
@@ -765,7 +771,8 @@ router.post('/chapter/update', middleware.hasToken,function (req, res) {
       	addressIdRemove:addressIdRemove,
       	addressIdAdd:addressIdAdd,
       	eventId:eventId,
-      	eventFinish:eventFinish
+      	eventFinish:eventFinish,
+      	remarks:remarks
       })
       chapter.save(function(err,doc){
       	if(err) {
@@ -944,8 +951,9 @@ router.post('/result/update', middleware.hasToken,function (req, res) {
 	var id = req.body.id;
 	var cArr = req.body.cArr;
 	var name = req.body.name;
+	var remarks = req.body.remarks
 	if(id){//修改
-    Result.findByIdAndUpdate(id,{cArr:cArr,name:name},function(err,doc){
+    Result.findByIdAndUpdate(id,{cArr:cArr,name:name,remarks:remarks},function(err,doc){
     	if(err) {
       	console.log(err);
   	  	res.status(200).send({
@@ -964,6 +972,7 @@ router.post('/result/update', middleware.hasToken,function (req, res) {
 		var result = new Result({
       cArr:cArr,
       name:name,
+      remarks:remarks
     })
     result.save(function(err,doc){
     	if(err) {
@@ -1053,9 +1062,10 @@ router.post('/mystery/update', middleware.hasToken,function (req, res) {
 	var image = req.body.image;
 	var name = req.body.name;
 	var price = req.body.price;
+	var remarks = req.body.remarks
 
 	if(id){//修改
-    Mystery.findByIdAndUpdate(id,{image:image,name:name,price:price},function(err,doc){
+    Mystery.findByIdAndUpdate(id,{image:image,name:name,price:price,remarks:remarks},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1073,7 +1083,8 @@ router.post('/mystery/update', middleware.hasToken,function (req, res) {
 		var mystery = new Mystery({
       image:image,
       name:name,
-      price:price
+      price:price,
+      remarks:remarks
     })
     mystery.save(function(err,doc){
     	if(err) {
@@ -1142,9 +1153,10 @@ router.post('/event/update', middleware.hasToken,function (req, res) {
 	var title = req.body.title;
 	var toChapterId = req.body.toChapterId;
 	var price = req.body.price;
+	var remarks = req.body.remarks
 
 	if(id){//修改
-    Event.findByIdAndUpdate(id,{content:content,desc:desc,mId:mId,title:title,toChapterId:toChapterId,price:price},function(err,doc){
+    Event.findByIdAndUpdate(id,{content:content,desc:desc,mId:mId,title:title,toChapterId:toChapterId,price:price,remarks:remarks},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1165,7 +1177,8 @@ router.post('/event/update', middleware.hasToken,function (req, res) {
       mId:mId,
       title:title,
       toChapterId:toChapterId,
-      price:price
+      price:price,
+      remarks:remarks
     })
     console.log(event)
     event.save(function(err,doc){
@@ -1236,9 +1249,10 @@ router.post('/option/update', middleware.hasToken,function (req, res) {
 	var unlockAddressId = req.body.unlockAddressId;
 	var addAddressId = req.body.addAddressId;
 	var removeAddressId = req.body.removeAddressId;
+	var remarks = req.body.remarks
 
 	if(id){//修改
-    Option.findByIdAndUpdate(id,{addressId:addressId,unlockAddressId:unlockAddressId,addAddressId:addAddressId,removeAddressId:removeAddressId,chapterId:chapterId,medal:medal,name:name},function(err,doc){
+    Option.findByIdAndUpdate(id,{addressId:addressId,unlockAddressId:unlockAddressId,addAddressId:addAddressId,removeAddressId:removeAddressId,chapterId:chapterId,medal:medal,name:name,remarks:remarks},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1260,7 +1274,8 @@ router.post('/option/update', middleware.hasToken,function (req, res) {
       name:name,
       unlockAddressId:unlockAddressId,
       addAddressId:addAddressId,
-      removeAddressId:removeAddressId
+      removeAddressId:removeAddressId,
+      remarks:remarks
     })
     option.save(function(err,doc){
     	if(err) {

@@ -7,6 +7,7 @@ var ObjectId = Schema.Types.ObjectId
 var RoleSchema = new mongoose.Schema({
   image:String,
   name: String,
+  remarks:String,
   meta: {
     createAt: {
       type: Date,

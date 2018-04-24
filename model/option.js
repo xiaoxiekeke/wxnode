@@ -13,6 +13,7 @@ var OptionSchema = new mongoose.Schema({
   unlockAddressId:String,
   addAddressId:String,
   removeAddressId:String,
+  remarks:String,
   medal:Number,
   name:String,
   meta: {

@@ -20,6 +20,7 @@ var EventSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'Mystery'
   },
+  remarks:String,
   meta: {
     createAt: {
       type: Date,
