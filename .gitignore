@@ -1,4 +1,6 @@
 .DS*
 node_modules
-/Images/*
 /Images/!.gitkeep
+/Images/*.png
+/Images/*.jpg
+/Images/*.jpeg
