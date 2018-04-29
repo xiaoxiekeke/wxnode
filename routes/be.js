@@ -951,9 +951,10 @@ router.post('/result/update', middleware.hasToken,function (req, res) {
 	var id = req.body.id;
 	var cArr = req.body.cArr;
 	var name = req.body.name;
+	var image = req.body.image;
 	var remarks = req.body.remarks
 	if(id){//修改
-    Result.findByIdAndUpdate(id,{cArr:cArr,name:name,remarks:remarks},function(err,doc){
+    Result.findByIdAndUpdate(id,{cArr:cArr,name:name,remarks:remarks,image:image},function(err,doc){
     	if(err) {
       	console.log(err);
   	  	res.status(200).send({
@@ -972,6 +973,7 @@ router.post('/result/update', middleware.hasToken,function (req, res) {
 		var result = new Result({
       cArr:cArr,
       name:name,
+      image:image,
       remarks:remarks
     })
     result.save(function(err,doc){
@@ -1060,12 +1062,13 @@ router.post('/mystery/list', middleware.hasToken,function (req, res) {
 router.post('/mystery/update', middleware.hasToken,function (req, res) {
 	var id = req.body.id;
 	var image = req.body.image;
+	var lockImage = req.body.lockImage;
 	var name = req.body.name;
 	var price = req.body.price;
 	var remarks = req.body.remarks
 
 	if(id){//修改
-    Mystery.findByIdAndUpdate(id,{image:image,name:name,price:price,remarks:remarks},function(err,doc){
+    Mystery.findByIdAndUpdate(id,{lockImage:lockImage,image:image,name:name,price:price,remarks:remarks},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1081,6 +1084,7 @@ router.post('/mystery/update', middleware.hasToken,function (req, res) {
     })
 	}else{//新增
 		var mystery = new Mystery({
+			lockImage:lockImage,
       image:image,
       name:name,
       price:price,
