@@ -288,10 +288,11 @@ router.post('/address/update', middleware.hasToken,function (req, res) {
 	var left = req.body.left;
 	var top = req.body.top;
 	var price = req.body.price
+	var backgroundImage = req.body.backgroundImage
 	var dialogTypes = req.body.dialogTypes
 	var remarks = req.body.remarks
 	if(id){//修改
-		Address.findByIdAndUpdate(id,{name:name,isActive:isActive,left:left,top:top,price:price,dialogTypes:dialogTypes,remarks:remarks},function(err,doc){
+		Address.findByIdAndUpdate(id,{name:name,isActive:isActive,left:left,top:top,price:price,dialogTypes:dialogTypes,remarks:remarks,backgroundImage:backgroundImage},function(err,doc){
     	if(err) {
       	console.log(err);
   	  	res.status(200).send({
@@ -314,6 +315,7 @@ router.post('/address/update', middleware.hasToken,function (req, res) {
       top:top,
       price:price,
       dialogTypes:dialogTypes,
+      backgroundImage:backgroundImage,
       remarks:remarks
     })
     address.save(function(err,doc){

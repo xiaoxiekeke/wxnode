@@ -10,6 +10,7 @@ var AddressSchema = new mongoose.Schema({
   isActive:Boolean,
   top:Number,
   dialogTypes:Number,
+  backgroundImage:String,
   price:Number,
   remarks:String,
   meta: {

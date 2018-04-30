@@ -16,6 +16,7 @@ var UserSchema = new mongoose.Schema({
   chapter:[String],
   mystery:[String],
   event:[String],
+  explored:[String],
   messages:[String],
   unLockResult:[String],
   // clockin:Number,

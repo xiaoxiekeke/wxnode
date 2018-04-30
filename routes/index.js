@@ -55,6 +55,7 @@ module.exports = function (app) {
 
   app.use('/verify', require('./verify'));
   app.use('/be', require('./be'));
+  app.use('/api', require('./fe'));
   // app.use('/signup', require('./signup'));
   // app.use('/signin', require('./signin'));
   // app.use('/signout', require('./signout'));
