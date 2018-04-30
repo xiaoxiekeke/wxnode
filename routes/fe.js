@@ -172,9 +172,7 @@ router.post('/map/help', middleware.hasUserToken,function (req, res) {
   p1.then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   }).catch(function(err){
     res.status(200).send({
@@ -264,7 +262,7 @@ router.post('/map/optionSelect', middleware.hasUserToken,function (req, res) {
   Promise.all([p1, p2, p3,p4]).then(function (results) {
     res.status(200).send({
       result:errConfig.success,
-      data:...returnDate
+      data:returnDate
     });
   }).catch(function(err){
     res.status(200).send({
@@ -288,9 +286,7 @@ router.post('/chapter/detail', middleware.hasUserToken,function (req, res) {
   p1.then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   }).catch(function(err){
     res.status(200).send({
@@ -355,9 +351,7 @@ router.post('/chapter/toComment', middleware.hasToken,function (req, res) {
     } else {
       res.status(200).send({
         result:errConfig.success,
-        data:{
-          ...doc
-        }
+        data:doc
       });
     }
   })
@@ -479,9 +473,7 @@ router.post('/chapter/readed', middleware.hasUserToken,function (req, res) {
   }).then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   }).catch(function(err){
     res.status(200).send({
@@ -528,9 +520,7 @@ router.post('/u/timerMedal', middleware.hasUserToken,function (req, res) {
   p1.then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   }).catch(function(err){
     res.status(200).send({
@@ -588,9 +578,7 @@ router.post('/event/detail', middleware.hasUserToken,function (req, res) {
   Event.findOne({_id:id}).sort({'meta.createAt':-1}).exec().then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   },function(err){
     // on reject
@@ -625,9 +613,7 @@ router.post('/result/detail', middleware.hasUserToken,function (req, res) {
   Result.findOne({_id:id}).sort({'meta.createAt':-1}).exec().then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   },function(err){
     // on reject
@@ -657,9 +643,7 @@ router.post('/medal/add', middleware.hasUserToken,function (req, res) {
   p1.then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   }).catch(function(err){
     res.status(200).send({
@@ -686,9 +670,7 @@ router.post('/medal/reduce', middleware.hasUserToken,function (req, res) {
   p1.then(function(result){
     res.status(200).send({
       result:errConfig.success,
-      data:{
-        ...result
-      }
+      data:result
     });
   }).catch(function(err){
     res.status(200).send({
