@@ -137,13 +137,14 @@ router.post('/map/detail', middleware.hasUserToken,function (req, res) {
   });
 
   Promise.all([p1, p2, p3]).then(function (results) {
+    
     res.status(200).send({
       result:errConfig.success,
       data:{
         Address:{
-          ...result[0],
-          dialogList:...result[1],
-          optionList:...result[2] 
+          ...results[0],
+          dialogList:...results[1],
+          optionList:...results[2] 
         }
       }
     });
