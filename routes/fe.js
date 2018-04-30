@@ -137,7 +137,7 @@ router.post('/map/detail', middleware.hasUserToken,function (req, res) {
   });
 
   Promise.all([p1, p2, p3]).then(function (results) {
-    
+    console.log(results)
     res.status(200).send({
       result:errConfig.success,
       data:{
