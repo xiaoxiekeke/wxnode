@@ -142,9 +142,9 @@ router.post('/map/detail', middleware.hasUserToken,function (req, res) {
       result:errConfig.success,
       data:{
         Address:{
-          ...results[0],
-          dialogList:...results[1],
-          optionList:...results[2] 
+          results[0],
+          dialogList:results[1],
+          optionList:results[2] 
         }
       }
     });
