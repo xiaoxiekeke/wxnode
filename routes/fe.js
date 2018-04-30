@@ -141,11 +141,9 @@ router.post('/map/detail', middleware.hasUserToken,function (req, res) {
     res.status(200).send({
       result:errConfig.success,
       data:{
-        Address:{
-          results[0],
-          dialogList:results[1],
-          optionList:results[2] 
-        }
+        Address:results[0],
+        dialogList:results[1],
+        optionList:results[2] 
       }
     });
     console.log(results); 
