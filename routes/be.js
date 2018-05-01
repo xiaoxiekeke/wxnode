@@ -287,12 +287,11 @@ router.post('/address/update', middleware.hasToken,function (req, res) {
 	var isActive = req.body.isActive;
 	var left = req.body.left;
 	var top = req.body.top;
-	var price = req.body.price
 	var backgroundImage = req.body.backgroundImage
 	var dialogTypes = req.body.dialogTypes
 	var remarks = req.body.remarks
 	if(id){//修改
-		Address.findByIdAndUpdate(id,{name:name,isActive:isActive,left:left,top:top,price:price,dialogTypes:dialogTypes,remarks:remarks,backgroundImage:backgroundImage},function(err,doc){
+		Address.findByIdAndUpdate(id,{name:name,isActive:isActive,left:left,top:top,dialogTypes:dialogTypes,remarks:remarks,backgroundImage:backgroundImage},function(err,doc){
     	if(err) {
       	console.log(err);
   	  	res.status(200).send({
@@ -313,7 +312,6 @@ router.post('/address/update', middleware.hasToken,function (req, res) {
       isActive:isActive,
       left:left,
       top:top,
-      price:price,
       dialogTypes:dialogTypes,
       backgroundImage:backgroundImage,
       remarks:remarks
@@ -1066,11 +1064,10 @@ router.post('/mystery/update', middleware.hasToken,function (req, res) {
 	var image = req.body.image;
 	var lockImage = req.body.lockImage;
 	var name = req.body.name;
-	var price = req.body.price;
 	var remarks = req.body.remarks
 
 	if(id){//修改
-    Mystery.findByIdAndUpdate(id,{lockImage:lockImage,image:image,name:name,price:price,remarks:remarks},function(err,doc){
+    Mystery.findByIdAndUpdate(id,{lockImage:lockImage,image:image,name:name,remarks:remarks},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1089,7 +1086,6 @@ router.post('/mystery/update', middleware.hasToken,function (req, res) {
 			lockImage:lockImage,
       image:image,
       name:name,
-      price:price,
       remarks:remarks
     })
     mystery.save(function(err,doc){
@@ -1158,11 +1154,10 @@ router.post('/event/update', middleware.hasToken,function (req, res) {
 	var mId = req.body.mId;
 	var title = req.body.title;
 	var toChapterId = req.body.toChapterId;
-	var price = req.body.price;
 	var remarks = req.body.remarks
 
 	if(id){//修改
-    Event.findByIdAndUpdate(id,{content:content,desc:desc,mId:mId,title:title,toChapterId:toChapterId,price:price,remarks:remarks},function(err,doc){
+    Event.findByIdAndUpdate(id,{content:content,desc:desc,mId:mId,title:title,toChapterId:toChapterId,remarks:remarks},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1183,7 +1178,6 @@ router.post('/event/update', middleware.hasToken,function (req, res) {
       mId:mId,
       title:title,
       toChapterId:toChapterId,
-      price:price,
       remarks:remarks
     })
     console.log(event)

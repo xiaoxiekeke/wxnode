@@ -337,6 +337,9 @@ el-tree .tac .tree .is-current[data-v-d18bd586] {
 		color: #fff;
 		cursor: pointer;
 }
+.image-block[data-v-054925eb]{
+		overflow: hidden;
+}
 .image-block img[data-v-054925eb]{
 		width: 100%;
 }
@@ -2213,4 +2216,4 @@ font-style: normal;
 .el-icon-third-oppose_light:before { content: "\E847"; }
 
 
-/*# sourceMappingURL=app.6f105038f14316bcbb6ce7ed36313a47.css.map*/
+/*# sourceMappingURL=app.ab598293588c358af26b385d9b2d8a01.css.map*/
