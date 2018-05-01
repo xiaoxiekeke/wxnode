@@ -46,7 +46,7 @@ walk(models_path)
 //使用xmlparser插件解析请求体上的xml信息
 app.use(XMLParser())
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit:'50mb'}));
 app.use(bodyParser.urlencoded({ extended: true,limit:'50mb' }));
 
 app.all('*', function(req, res, next) {
