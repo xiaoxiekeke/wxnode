@@ -47,7 +47,7 @@ walk(models_path)
 app.use(XMLParser())
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false,limit:'2mb' }));
 
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
