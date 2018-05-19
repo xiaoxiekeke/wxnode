@@ -4,20 +4,12 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var ObjectId = Schema.Types.ObjectId
 
-var OptionSchema = new mongoose.Schema({
-  addressId:{
-    type:ObjectId,
-    ref:'Address'
-  },
-  chapterId:String,
-  unlockAddressId:String,
-  addAddressId:String,
-  removeAddressId:String,
-  optionScore:Number,
-  dialogs:[String],
-  remarks:String,
-  medal:Number,
-  name:String,
+var DefaultSchema = new mongoose.Schema({
+  chapter:[String],
+  address:[String],
+  lastChapter:String,
+  defaultMedal:Number,
+  maxMedal:Number,
   meta: {
     createAt: {
       type: Date,
@@ -30,14 +22,15 @@ var OptionSchema = new mongoose.Schema({
   }
 })
 
-OptionSchema.pre('save', function(next) {
+DefaultSchema.pre('save', function(next) {
   if (this.isNew) {
     this.meta.createAt = this.meta.updateAt = Date.now()
   }
   else {
     this.meta.updateAt = Date.now()
   }
+
   next()
 })
 
-module.exports = mongoose.model('Option', OptionSchema)
+module.exports = mongoose.model('Default', DefaultSchema)

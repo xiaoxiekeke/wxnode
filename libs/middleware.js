@@ -2,6 +2,7 @@
 var mongoose=require('mongoose')
 var Admin=mongoose.model('Admin')
 var User=mongoose.model('User')
+var Session=mongoose.model('Session')
 const errConfig = require('./error.config')
 // var sha1=require('sha1')
 // var config=require('../../config/config')
@@ -33,19 +34,23 @@ exports.hasToken=function(req,res,next) {
 }
 
 exports.hasUserToken=function(req,res,next) {
-	var accessToken=req.body.accessToken
-	if(!accessToken){
+	// var accessToken=req.body.accessToken
+	var sessionid=req.headers.sessionid
+	// next()
+	if(!sessionid){
 	  res.status(200).send({
 			result:errConfig.nologin,
 		});
+		return
 	}
-	User.findOne({
-		_id:accessToken
+	Session.findOne({
+		sessionid:sessionid
 	}).exec().then(function(result){
 		if(!result){
 			res.status(200).send({
 				result:errConfig.nologin
 			});
+			return
 		}else{
 			next()
 		}
@@ -53,6 +58,7 @@ exports.hasUserToken=function(req,res,next) {
 		res.status(200).send({
 			result:errConfig.serverErr
 		});
+		return
 	})
 
 }

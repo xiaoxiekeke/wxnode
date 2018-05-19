@@ -4,20 +4,10 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var ObjectId = Schema.Types.ObjectId
 
-var OptionSchema = new mongoose.Schema({
-  addressId:{
-    type:ObjectId,
-    ref:'Address'
-  },
-  chapterId:String,
-  unlockAddressId:String,
-  addAddressId:String,
-  removeAddressId:String,
-  optionScore:Number,
-  dialogs:[String],
-  remarks:String,
-  medal:Number,
-  name:String,
+var SessionSchema = new mongoose.Schema({
+  sessionid:String,
+  openid:String,
+  session_key:String,
   meta: {
     createAt: {
       type: Date,
@@ -30,14 +20,15 @@ var OptionSchema = new mongoose.Schema({
   }
 })
 
-OptionSchema.pre('save', function(next) {
+SessionSchema.pre('save', function(next) {
   if (this.isNew) {
     this.meta.createAt = this.meta.updateAt = Date.now()
   }
   else {
     this.meta.updateAt = Date.now()
   }
+
   next()
 })
 
-module.exports = mongoose.model('Option', OptionSchema)
+module.exports = mongoose.model('Session', SessionSchema)

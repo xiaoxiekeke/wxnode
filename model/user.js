@@ -5,25 +5,23 @@ var Schema = mongoose.Schema
 var ObjectId = Schema.Types.ObjectId
 
 var UserSchema = new mongoose.Schema({
+  openid:String,
   amount:Number,
-  avatar:String,
+  gender:Number,
+  avatarUrl:String,
   hasbanned:Boolean,
   medal:Number,
   optionScore:Number,
-  nickname: String,
+  nickName: String,
   activeAddress:String,
   address:[String],
   chapter:[String],
+  explored:[String],
   mystery:[String],
   event:[String],
-  explored:[String],
+  eventFinish:[String],
   messages:[String],
   unLockResult:[String],
-  // clockin:Number,
-  // lastclockTime:{
-  //   type:Date,
-  //   default:Date.now()
-  // },
   meta: {
     createAt: {
       type: Date,
@@ -43,7 +41,6 @@ UserSchema.pre('save', function(next) {
   else {
     this.meta.updateAt = Date.now()
   }
-
   next()
 })
 

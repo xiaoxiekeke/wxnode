@@ -7,6 +7,7 @@ var ObjectId = Schema.Types.ObjectId
 var mysterySchema = new mongoose.Schema({
   image:String,
   lockImage:String,
+  listTitleImage:String,
   name:String,
   price:Number,
   remarks:String,

@@ -2,6 +2,8 @@
 // 后台接口
 
 var express = require('express');
+var http=require('http');
+var request = require('request');  
 var router = express.Router();
 var crypto = require('crypto');
 var request= require('request');
@@ -9,6 +11,9 @@ var fs = require('fs');
 const jsSdk = require('../libs/jssdk')
 const errConfig = require('../libs/error.config')
 var middleware=require('../libs/middleware')
+var sha1=require('sha1')
+
+
 
 var mongoose=require('mongoose')
 
@@ -26,70 +31,155 @@ var Mystery=mongoose.model('Mystery')
 var Event=mongoose.model('Event')
 var Option=mongoose.model('Option')
 var Topup=mongoose.model('Topup')
+var Default=mongoose.model('Default')
+var Session=mongoose.model('Session')
+
+// Array.prototype.indexOf = function(val) {  
+//   for (var i = 0; i < this.length; i++) {  
+//   if (this[i] == val) return i;  
+//   }  
+//   return -1;  
+// }; 
+
+function remove(arr,val) {
+  var index = arr.indexOf(val);  
+  if (index > -1) {  
+    arr.splice(index, 1);  
+  } 
+  return arr 
+};
+
+function getArray(a) {//去重
+  var hash = {},
+     len = a.length,
+     result = [];
+  for (var i = 0; i < len; i++){
+     if (!hash[a[i]]){
+         hash[a[i]] = true;
+         result.push(a[i]);
+     } 
+  }
+  return result;
+};
 
 
 // 登录
 router.post('/login', function (req, res) {
-	var username = req.body.username;
-	var password = req.body.password;
-	User.findOne({
-    userName:username
-  }).exec().then(function(result) {
-    // on resolve
-    if (!result) {//没有的话创建
-      //创建Entity：由Model创建的实体，使用save方法保存数据
-      user = new User({
-        userName:username,
-        passWord:password
+  var AppId="wx7adbafc7365a8cf9"
+  var AppSecret="37bfa52feb4e4f942d7d4ebb8d7e17ba"
+  var code = req.body.code;
+  var url='https://api.weixin.qq.com/sns/jscode2session?appid='+AppId+'&secret='+AppSecret+'&js_code='+code+'&grant_type=authorization_code'
+  
+  request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var body=JSON.parse(body)
+      var sessionid=sha1(body.session_key+body.openid)
+      var openid=body.openid
+      var session_key=body.session_key
+      console.log(sessionid,openid,session_key)
+      
+      // Session.remove({'openid':openid},function(err,doc){
+      //   if(err) {
+      //     console.log(err);
+      //     res.status(200).send({
+      //       result:errConfig.serverErr
+      //     });
+      //   } else {
+      //     res.status(200).send({
+      //       result:errConfig.success,
+      //       data:{
+      //         accessToken:doc
+      //       }
+      //     });
+      //   }
+      // })
+      Session.find({'openid':openid},function(err,doc){
+        if(err){
+          res.status(200).send({
+            result:errConfig.serverErr
+          });
+        }else{
+          if(doc.length==0){
+            //新增
+            console.log("增")
+            Default.find().exec().then(function(result){
+              //用户表中插入一条数据
+              User.create({
+                'openid':openid,
+                'chapter':result[0].chapter,
+                'address':result[0].address,
+                'medal':result[0].defaultMedal,
+                'optionScore':0
+              }, function(error,doc){
+                if(error) {
+                  console.log(error)
+                  res.status(200).send({
+                    result:errConfig.serverErr
+                  });
+                } else {
+                  console.log(doc);
+                  Session.create({
+                    'sessionid':sessionid,
+                    'openid':openid,
+                    'session_key':session_key
+                  }, function(error,doc){
+                    if(error) {
+                      res.status(200).send({
+                        result:errConfig.serverErr
+                      });
+                    } else {
+                      console.log(doc);
+                      res.status(200).send({
+                        result:errConfig.success,
+                        data:{
+                          sessionid:doc.sessionid
+                        }
+                      });
+                    }
+                  });
+                }
+              });
+            },function(err){
+              res.status(200).send({
+                result:errConfig.serverErr
+              });
+            })
+          }else{
+            // 修改
+            console.log("改")
+            Session.findOneAndUpdate({'openid':body.openid},{$set:{
+              'sessionid':sessionid,
+              'session_key':session_key
+            }},{
+              new: true
+            },function(err,doc){
+              if(err){
+                res.status(200).send({
+                  result:errConfig.serverErr
+                });
+              }else{
+                console.log(doc);
+                res.status(200).send({
+                  result:errConfig.success,
+                  data:{
+                    sessionid:doc.sessionid
+                  }
+                });
+              }
+            })
+            
+          }
+          // resolve(doc)
+        }
       })
-      user.save(function(err,doc){
-      	if(err) {
-        	console.log(err);
-    	  	res.status(200).send({
-    				result:errConfig.serverErr
-    			});
-	    	} else {
-	        res.status(200).send({
-	    			result:errConfig.success,
-	    			data:{
-	    				accessToken:doc
-	    			}
-	    		});
-	    	}
-      })
+    }else {
+      console.log("[error]", err)
       res.status(200).send({
-  			result:{
-  				success:false,
-  				errCode:100,	
-  				errMsg:"用户不存在"
-  			}
-  		});
-    }else{//有的话判断
-    	console.log(result)
-    	if (password===result.passWord) {
-    		res.status(200).send({
-    			result:errConfig.success,
-    			data:{
-    				accessToken:result._id
-    			}
-    		});
-    	}else{
-    		res.status(200).send({
-    			result:{
-    				success:false,
-    				errCode:100,	
-    				errMsg:"用户名或密码错误，请重新输入"
-    			}
-    		});
-    	}
+        result:errConfig.serverErr
+      });
     }
-  },function(err) {
-  	// on reject
-  	console.log(err)
-  	res.status(200).send({
-			result:errConfig.serverErr
-		});
-  })
+  }) 
+	
 });
 
 
@@ -122,14 +212,14 @@ router.post('/map/detail', middleware.hasUserToken,function (req, res) {
     })
   });
   var p2 = new Promise(function (resolve, reject) {
-    Dialog.find({_id:id}).exec().then(function(result){
+    Dialog.find({addressId:id}).populate('roleId','name image').exec().then(function(result){
       resolve(result)
     },function(err){
       reject(err)
     })
   });
   var p3 = new Promise(function (resolve, reject) {
-    Option.find({_id:id}).exec().then(function(result){
+    Option.find({addressId:id}).exec().then(function(result){
       resolve(result)
     },function(err){
       reject(err)
@@ -189,86 +279,61 @@ router.post('/map/optionSelect', middleware.hasUserToken,function (req, res) {
   var removeAddress =req.body.removeAddress;
   var unlockAddress =req.body.unlockAddress;
   var unlockChapter =req.body.unlockChapter;
-  var returnDate={
-    address:[],
-    chapter:[]
-  };
+  var medal =req.body.medal;
+  var optionScore=req.body.optionScore;
 
-  var p1 = new Promise(function (resolve, reject) {
-    if(addAddress){
-      User.findByIdAndUpdate(accessToken,{$push:{address:addAddress}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          returnDate.address=doc.address
-          resolve(doc)
-        }
-      })
+  User.findById(accessToken,function(err,user){
+    if(err){
+      res.status(200).send({
+        result:errConfig.serverErr
+      });
     }else{
-      resolve({})
-    }
-  });
-  var p2 = new Promise(function (resolve, reject) {
-    if(removeAddress){
-      User.findByIdAndUpdate(accessToken,{$pull:{address:removeAddress}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          returnDate.address=doc.address
-          resolve(doc)
-        }
-      })
-    }else{
-      resolve({})
-    }
-  });
-  var p3 = new Promise(function (resolve, reject) {
-    if(unlockAddress){
-      User.findByIdAndUpdate(accessToken,{$push:{address:unlockAddress}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          returnDate.address=doc.address
-          resolve(doc)
-        }
-      })
-    }else{
-      resolve({})
-    }
-  });
-  var p4 = new Promise(function (resolve, reject) {
-    if(unlockChapter){
-      User.findByIdAndUpdate(accessToken,{$push:{chapter:unlockChapter}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          returnDate.chapter=doc.chapter
-          resolve(doc)
-        }
-      })
-    }else{
-      resolve({})
-    }
-  });
 
-  Promise.all([p1, p2, p3,p4]).then(function (results) {
-    res.status(200).send({
-      result:errConfig.success,
-      data:returnDate
-    });
-  }).catch(function(err){
-    res.status(200).send({
-      result:errConfig.serverErr
-    });
+      if (addAddress) {
+        user.address.push(addAddress)
+        user.address=getArray(user.address)
+      };
+
+      if (unlockAddress) {
+        user.address.push(unlockAddress)
+        user.address=getArray(user.address)
+      };
+
+      if (removeAddress) {
+        user.address=remove(user.address,removeAddress)  
+      };
+      
+      if (unlockChapter) {
+        user.chapter.push(unlockChapter)
+        user.chapter=getArray(user.chapter)
+      };
+
+      if (medal) {
+        user.medal=user.medal-medal  
+      };
+      if (optionScore) {
+        user.optionScore=user.optionScore+optionScore
+      };
+
+      User.findByIdAndUpdate(accessToken,{$set:user},{
+        new:true
+      },function(err,user){
+        if (err) {
+          res.status(200).send({
+            result:errConfig.serverErr
+          });
+        }else{
+          res.status(200).send({
+            result:errConfig.success,
+            data:user
+          });  
+        }
+      });
+      
+    }
   })
+
+
 });
 
 
@@ -297,7 +362,7 @@ router.post('/chapter/detail', middleware.hasUserToken,function (req, res) {
 
 // 章节列表
 router.post('/chapter/list', middleware.hasUserToken,function (req, res) {
-  Chapter.find().sort({'meta.createAt':-1}).exec().then(function(result){
+  Chapter.find().sort({'meta.createAt':1}).exec().then(function(result){
     res.status(200).send({
       result:errConfig.success,
       data:{
@@ -361,6 +426,7 @@ router.post('/chapter/toComment', middleware.hasToken,function (req, res) {
 router.post('/chapter/readed', middleware.hasUserToken,function (req, res) {
   var id = req.body.chapterId;
   var accessToken = req.body.accessToken;
+  var optionScore=req.body.optionScore;
   var p1 = new Promise(function (resolve, reject) {
     Chapter.findOne({_id:id}).exec().then(function(result){
       resolve(result)
@@ -368,118 +434,55 @@ router.post('/chapter/readed', middleware.hasUserToken,function (req, res) {
       reject(err)
     })
   });
-  function mysteryId(){
-    if(result.mysteryId.length>0){
-      User.findByIdAndUpdate(accessToken,{$push:{mystery:result.mysteryId}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          resolve(result)
-        }
-      })
-    }else{
-      resolve(result)
-    }
-  }
-  function eventId(){
-    if(result.eventId.length>0){
-      User.findByIdAndUpdate(accessToken,{$push:{event:result.eventId}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          resolve(result)
-        }
-      })
-    }else{
-      resolve(result)
-    }
-  }
-  function eventFinish(){
-    if(result.eventFinish.length>0){
-      User.findByIdAndUpdate(accessToken,{$push:{explored:result.eventFinish}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          resolve(result)
-        }
-      })
-    }else{
-      resolve(result)
-    }
-  }
-  function addressId(){
-    if(result.addressId){
-      User.findByIdAndUpdate(accessToken,{$push:{address:result.addressId}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          resolve(result)
-        }
-      })
-    }else{
-      resolve(result)
-    }
-  }
-  function addressIdRemove(){
-    if(result.addressIdRemove){
-      User.findByIdAndUpdate(accessToken,{$pull:{address:result.addressIdRemove}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          resolve(result)
-        }
-      })
-    }else{
-      resolve(result)
-    }
-  }
-  function addressIdAdd(){
-    if(result.addressIdAdd){
-      User.findByIdAndUpdate(accessToken,{$push:{address:result.addressIdAdd}},{
-        new: true
-      },function(err,doc){
-        if(err){
-          reject(err)
-        }else{
-          resolve(result)
-        }
-      })
-    }else{
-      resolve(result)
-    }
-  }
+  
   p1.then(function(result){
-    return new Promise(mysteryId);
-  }).then(function(result){
-    return new Promise(eventId);
-  }).then(function(result){
-    return new Promise(eventFinish);
-  }).then(function(result){
-    return new Promise(addressId);
-  }).then(function(result){
-    return new Promise(addressIdRemove);
-  }).then(function(result){
-    return new Promise(addressIdAdd);
-  }).then(function(result){
-    res.status(200).send({
-      result:errConfig.success,
-      data:result
-    });
+    //result:当前章节
+    User.findById(accessToken,function(err,user){
+      if(err){
+        res.status(200).send({
+          result:errConfig.serverErr
+        });
+      }else{
+        user.explored.push(result._id)
+        user.explored=getArray(user.explored)
+        user.mystery=getArray(user.mystery.concat(result.mysteryId))
+        user.event=getArray(user.event.concat(result.eventId))
+        user.eventFinish=getArray(user.eventFinish.concat(result.eventFinish))
+        
+        if (result.addressId) {
+          user.address.push(result.addressId)
+          user.address=getArray(user.address)
+        };
+        if (result.addressIdAdd) {
+          user.address.push(result.addressIdAdd)
+          user.address=getArray(user.address)
+        };
+        user.address=remove(user.address,result.addressIdRemove)
+        user.medal=user.medal-result.price
+
+        User.findByIdAndUpdate(accessToken,{$set:user},{
+          new:true
+        },function(err,user){
+          if (err) {
+            res.status(200).send({
+              result:errConfig.serverErr
+            });
+          }else{
+            res.status(200).send({
+              result:errConfig.success,
+              data:user
+            });  
+          }
+        });
+        
+      }
+    })
+    
   }).catch(function(err){
     res.status(200).send({
       result:errConfig.serverErr
     });
-  })
+  });
 });
 
 
@@ -531,6 +534,76 @@ router.post('/u/timerMedal', middleware.hasUserToken,function (req, res) {
 
 // 同步用户信息
 router.post('/u/syncUserInfo', function (req, res) {
+  var sessionid = req.body.sessionid;
+  var userInfo = req.body.userInfo;
+  var isNew = req.body.isNew;
+
+
+  // 1、根据sessionid从session表中找到openid
+  var p1 = new Promise(function (resolve, reject) {
+    Session.findOne({sessionid:sessionid}).exec().then(function(result){
+      resolve(result)
+    },function(err){
+      reject(err)
+    })
+  });
+
+  // // 2、找到系统默认设置的参数
+  // var p2 = new Promise(function (resolve, reject) {
+  //   Default.find().exec().then(function(result){
+  //     resolve(result)
+  //   },function(err){
+  //     reject(err)
+  //   })
+  // });
+
+  
+
+  // 3、根据openid设置用户信息
+  p1.then(function (result) {
+    console.log(result)
+    var openid=result.openid
+    var params={
+      'nickName':userInfo.nickName,
+      'gender':userInfo.gender,
+      'avatarUrl':userInfo.avatarUrl
+    } 
+    User.findOneAndUpdate({'openid':openid},{$set:params},{
+      new: true
+    },function(err,doc){
+      if(err){
+        console.log(err)
+        res.status(200).send({
+          result:errConfig.serverErr
+        });
+      }else{
+        console.log(doc);
+        res.status(200).send({
+          result:errConfig.success,
+          data:{
+            address:doc.address,
+            chapter:doc.chapter,
+            mystery:doc.mystery,
+            event:doc.event,
+            explored:doc.explored,
+            message:doc.message,
+            unLockResult:doc.unLockResult,
+            nickName:doc.nickName,
+            avatarUrl:doc.avatarUrl,
+            optionScore:doc.optionScore,
+            medal:doc.medal,
+            eventFinish:doc.eventFinish,
+            _id:doc._id
+          }
+        });
+      }
+    })
+  }).catch(function(err){
+    console.log(err)
+    res.status(200).send({
+      result:errConfig.serverErr
+    });
+  })
 });
 
 
@@ -592,7 +665,7 @@ router.post('/event/detail', middleware.hasUserToken,function (req, res) {
 
 // 结局列表
 router.post('/result/list', middleware.hasUserToken,function (req, res) {
-  Result.find().sort({'meta.createAt':-1}).exec().then(function(result){
+  Result.find().sort({'meta.createAt':1}).exec().then(function(result){
     res.status(200).send({
       result:errConfig.success,
       data:{
@@ -622,6 +695,44 @@ router.post('/result/detail', middleware.hasUserToken,function (req, res) {
       result:errConfig.serverErr
     });
   })
+});
+
+//解锁结局
+router.post('/result/unlock', middleware.hasUserToken,function (req, res) {
+  var id = req.body.id;
+  var cArr=req.body.cArr;
+  var resultId=req.body.resultId;
+
+  User.findById(id,function(err,user){
+    if(err){
+      res.status(200).send({
+        result:errConfig.serverErr
+      });
+    }else{
+      if (cArr.length>0) {
+        user.chapter=getArray(user.chapter.concat(cArr))
+      };
+      user.unLockResult.push(resultId)
+      user.unLockResult=getArray(user.unLockResult)
+
+      User.findByIdAndUpdate(id,{$set:user},{
+        new:true
+      },function(err,user){
+        if (err) {
+          res.status(200).send({
+            result:errConfig.serverErr
+          });
+        }else{
+          res.status(200).send({
+            result:errConfig.success,
+            data:user
+          });  
+        }
+      });
+      
+    }
+  })
+    
 });
 
 
@@ -673,6 +784,20 @@ router.post('/medal/reduce', middleware.hasUserToken,function (req, res) {
       data:result
     });
   }).catch(function(err){
+    res.status(200).send({
+      result:errConfig.serverErr
+    });
+  })
+});
+
+// 配置列表
+router.post('/default/list', middleware.hasUserToken,function (req, res) {
+  Default.find().exec().then(function(result){
+    res.status(200).send({
+      result:errConfig.success,
+      data:result[0]
+    });
+  },function(err){
     res.status(200).send({
       result:errConfig.serverErr
     });

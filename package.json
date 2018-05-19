@@ -21,7 +21,7 @@
     "express-xml-bodyparser": "^0.3.0",
     "fs": "0.0.1-security",
     "mongoose": "^5.0.14",
-    "request": "*",
+    "request": "^2.85.0",
     "sha1": "^1.1.1"
   }
 }

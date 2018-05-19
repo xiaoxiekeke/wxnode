@@ -25,6 +25,7 @@ var Mystery=mongoose.model('Mystery')
 var Event=mongoose.model('Event')
 var Option=mongoose.model('Option')
 var Topup=mongoose.model('Topup')
+var Default=mongoose.model('Default')
 
 
 // 登录
@@ -1063,11 +1064,13 @@ router.post('/mystery/update', middleware.hasToken,function (req, res) {
 	var id = req.body.id;
 	var image = req.body.image;
 	var lockImage = req.body.lockImage;
-	var name = req.body.name;
+	var listTitleImage = req.body.listTitleImage;
+  var name = req.body.name;
 	var remarks = req.body.remarks
 
+
 	if(id){//修改
-    Mystery.findByIdAndUpdate(id,{lockImage:lockImage,image:image,name:name,remarks:remarks},function(err,doc){
+    Mystery.findByIdAndUpdate(id,{lockImage:lockImage,image:image,listTitleImage:listTitleImage,name:name,remarks:remarks},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1085,6 +1088,7 @@ router.post('/mystery/update', middleware.hasToken,function (req, res) {
 		var mystery = new Mystery({
 			lockImage:lockImage,
       image:image,
+      listTitleImage:listTitleImage,
       name:name,
       remarks:remarks
     })
@@ -1249,10 +1253,12 @@ router.post('/option/update', middleware.hasToken,function (req, res) {
 	var unlockAddressId = req.body.unlockAddressId;
 	var addAddressId = req.body.addAddressId;
 	var removeAddressId = req.body.removeAddressId;
-	var remarks = req.body.remarks
+  var dialogs = req.body.dialogs;
+	var remarks = req.body.remarks;
+  var optionScore=req.body.optionScore
 
 	if(id){//修改
-    Option.findByIdAndUpdate(id,{addressId:addressId,unlockAddressId:unlockAddressId,addAddressId:addAddressId,removeAddressId:removeAddressId,chapterId:chapterId,medal:medal,name:name,remarks:remarks},function(err,doc){
+    Option.findByIdAndUpdate(id,{addressId:addressId,unlockAddressId:unlockAddressId,addAddressId:addAddressId,removeAddressId:removeAddressId,dialogs:dialogs,chapterId:chapterId,medal:medal,name:name,remarks:remarks,optionScore:optionScore},function(err,doc){
     	if(err) {
   	  	res.status(200).send({
   				result:errConfig.serverErr
@@ -1275,7 +1281,9 @@ router.post('/option/update', middleware.hasToken,function (req, res) {
       unlockAddressId:unlockAddressId,
       addAddressId:addAddressId,
       removeAddressId:removeAddressId,
-      remarks:remarks
+      dialogs:dialogs,
+      remarks:remarks,
+      optionScore:optionScore
     })
     option.save(function(err,doc){
     	if(err) {
@@ -1347,6 +1355,70 @@ router.post('/pay/list', middleware.hasToken,function (req, res) {
 	})
 });
 
+
+//系统设置
+router.post('/default/list', middleware.hasToken,function (req, res) {
+  Default.find().exec().then(function(result){
+    res.status(200).send({
+      result:errConfig.success,
+      data:{
+        list:result
+      }
+    });
+  },function(err){
+    res.status(200).send({
+      result:errConfig.serverErr
+    });
+  })
+});
+
+router.post('/default/update', middleware.hasToken,function (req, res) {
+  var id = req.body.id;
+  var chapter = req.body.chapter;
+  var address = req.body.address;
+  var lastChapter=req.body.lastChapter;
+  var defaultMedal = req.body.defaultMedal;
+  var maxMedal = req.body.maxMedal;
+
+  if(id){//修改
+    Default.findByIdAndUpdate(id,{chapter:chapter,address:address,defaultMedal:defaultMedal,maxMedal:maxMedal,lastChapter:lastChapter},function(err,doc){
+      if(err) {
+        res.status(200).send({
+          result:errConfig.serverErr
+        });
+      } else {
+        res.status(200).send({
+          result:errConfig.success,
+          data:{
+            accessToken:doc
+          }
+        });
+      }
+    })
+  }else{//新增
+    var defaults = new Default({
+      chapter:chapter,
+      address:address,
+      lastChapter:lastChapter,
+      defaultMedal:defaultMedal,
+      maxMedal:maxMedal
+    })
+    defaults.save(function(err,doc){
+      if(err) {
+        res.status(200).send({
+          result:errConfig.serverErr
+        });
+      } else {
+        res.status(200).send({
+          result:errConfig.success,
+          data:{
+            accessToken:doc
+          }
+        });
+      }
+    })
+  }
+});
 
 
 module.exports = router;
