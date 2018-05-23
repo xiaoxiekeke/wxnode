@@ -15,13 +15,16 @@
   "author": "xiaoke",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "crypto": "*",
     "express": "^4.16.1",
     "express-xml-bodyparser": "^0.3.0",
     "fs": "0.0.1-security",
     "mongoose": "^5.0.14",
+    "qiniu": "^7.1.7",
     "request": "^2.85.0",
-    "sha1": "^1.1.1"
+    "sha1": "^1.1.1",
+    "uuid": "^3.2.1"
   }
 }

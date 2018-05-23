@@ -7,7 +7,9 @@ var request= require('request');
 var fs = require('fs');
 const jsSdk = require('../libs/jssdk')
 const errConfig = require('../libs/error.config')
+var config=require('../libs/config')
 var middleware=require('../libs/middleware')
+var qiniu = require('qiniu')
 
 var mongoose=require('mongoose')
 
@@ -120,6 +122,7 @@ router.post('/image/list', middleware.hasToken,function (req, res) {
 	})
 });
 
+/***
 router.post('/image/update', middleware.hasToken,function (req, res) {
 	var id = req.body.id;
 	var name = req.body.name;
@@ -204,7 +207,171 @@ router.post('/image/update', middleware.hasToken,function (req, res) {
 		}
 	})
 });
+***/
+router.post('/image/update', middleware.hasToken,function (req, res) {
+  var id = req.body.id;
+  var name = req.body.name;
+  var imageData = req.body.imageData;
+  var format=imageData.match(/(data:image\/)(\w+)(;base64)/)[2]
+  var fullname=name+'.'+format
+  var base64Data = imageData.replace(/^data:image\/\w+;base64,/, "");
+  var dataBuffer = new Buffer(base64Data, 'base64');
+  var path='Images/'+fullname
 
+  console.log("新增")
+      // 1、将图片文件存到七牛
+      // 2、将图片地址和图片名称存到数据库
+  middleware.saveToQiniu(dataBuffer,format).then(function(ress){
+    if (ress) {
+      var url = config.qiniu.image+ress.key
+      var name=fullname
+      var image = new Image({
+        name:name,
+        url:url
+      })
+      image.save(function(err,doc){
+        if(err) {
+          res.status(200).send({
+            result:errConfig.serverErr
+          });
+        } else {
+          res.status(200).send({
+            result:errConfig.success
+          });
+        }
+      })
+    };
+  }).catch(function(err){
+    res.status(200).send({
+      result:errConfig.serverErr
+    });
+  })
+  // Image.findOne({name:fullname}).exec().then(function(result){
+  //   console.log(result)
+  //   if (result) {
+  //     // 根据名称判断是否有重复，如果是，则说明是更新
+  //     // 1、根据文件名查到旧文件url
+  //     // 2、根据旧文件url将七牛上的旧文件删除
+  //     // 3、将新的文件上传到七牛
+  //     // 4、新的文件地址更新到数据库
+  //     var oldUrl=result.url
+  //     oldUrl.replace("http://applet-mystery.xiaoxiekeke.com/","")
+  //     middleware.delFromQiniu(oldUrl).then(function(ress){
+  //       if (ress) {
+  //         var url = config.qiniu.image+ress.key
+  //         var name=fullname
+  //         console.log(res)
+  //       };
+  //     }).catch(function(err){
+  //       res.status(200).send({
+  //         result:errConfig.serverErr
+  //       });
+  //     })
+
+
+  //     // Image.findOne({id:id}).exec().then(function(result){
+  //     //   if(result){
+
+  //     //     // Image.findByIdAndUpdate(id,{name:name,url:path},function(err,doc){
+  //     //     //   if(err) {
+  //     //     //     console.log(err);
+  //     //     //     res.status(200).send({
+  //     //     //       result:errConfig.serverErr
+  //     //     //     });
+  //     //     //   } else {
+  //     //     //     res.status(200).send({
+  //     //     //       result:errConfig.success,
+  //     //     //       data:{
+  //     //     //         accessToken:doc
+  //     //     //       }
+  //     //     //     });
+  //     //     //   }
+  //     //     // })
+  //     //   }else{
+  //     //     res.status(200).send({
+  //     //       result:errConfig.serverErr
+  //     //     });
+  //     //   }
+  //     // },function(err){
+  //     //   res.status(200).send({
+  //     //     result:errConfig.serverErr
+  //     //   });
+  //     // })
+  //   }else{
+  //     // 如果没有，则是新增
+  //     // 1、将图片文件存到七牛
+  //     // 2、将图片地址和图片名称存到数据库
+      
+  //   };
+    
+  // },function(err){
+  //   res.status(200).send({
+  //     result:errConfig.serverErr
+  //   });
+  // })
+  
+
+});
+
+/*
+router.post('/image/del',middleware.hasToken, function (req, res) {
+  var id = req.body.id;
+  if(id){
+    Image.findOne({_id:id}).exec().then(function(result){
+      return result
+    },function(err){
+      res.status(200).send({
+        result:errConfig.serverErr
+      });
+    }).then(function(result){
+      fs.exists(result.url,function(exist){
+        if(exist){//上传的图片不可重复
+          fs.unlink(result.url,function (err) {
+            if(err) {
+              res.status(200).send({
+                result:errConfig.serverErr
+              });
+            };
+            Image.remove({_id:id},function(err,doc){
+              if(err) {
+                console.log(err);
+                res.status(200).send({
+                  result:errConfig.serverErr
+                });
+              } else {
+                console.log(doc)
+                res.status(200).send({
+                  result:errConfig.success,
+                  data:doc
+                });
+              }
+            })
+          })
+        }else{
+          Image.remove({_id:id},function(err,doc){
+            if(err) {
+              console.log(err);
+              res.status(200).send({
+                result:errConfig.serverErr
+              });
+            } else {
+              console.log(doc)
+              res.status(200).send({
+                result:errConfig.success,
+                data:doc
+              });
+            }
+          })
+        }
+      })
+    })
+  }else{
+    res.status(200).send({
+      result:errConfig.paramsError
+    });
+  }
+});
+*/
 router.post('/image/del',middleware.hasToken, function (req, res) {
 	var id = req.body.id;
 	if(id){
@@ -215,46 +382,41 @@ router.post('/image/del',middleware.hasToken, function (req, res) {
 				result:errConfig.serverErr
 			});
 		}).then(function(result){
-			fs.exists(result.url,function(exist){
-				if(exist){//上传的图片不可重复
-					fs.unlink(result.url,function (err) {
-				    if(err) {
-				    	res.status(200).send({
-								result:errConfig.serverErr
-							});
-				    };
-				    Image.remove({_id:id},function(err,doc){
-				    	if(err) {
-				      	console.log(err);
-				  	  	res.status(200).send({
-				  				result:errConfig.serverErr
-				  			});
-				    	} else {
-				    		console.log(doc)
-				    		res.status(200).send({
-				    			result:errConfig.success,
-				    			data:doc
-				    		});
-				    	}
-						})
-					})
-		  	}else{
-		  		Image.remove({_id:id},function(err,doc){
-			    	if(err) {
-			      	console.log(err);
-			  	  	res.status(200).send({
-			  				result:errConfig.serverErr
-			  			});
-			    	} else {
-			    		console.log(doc)
-			    		res.status(200).send({
-			    			result:errConfig.success,
-			    			data:doc
-			    		});
-			    	}
-					})
-		  	}
-			})
+      // 七牛中删除
+      var oldUrl=result.url
+      var key=oldUrl.replace("http://applet-mystery.xiaoxiekeke.com/","")
+      middleware.delFromQiniu(key).then(function(ress){
+        console.log(ress)
+        if (ress.status==200) {
+          console.log("ress")
+          console.log(ress)
+          //数据库中删除
+          Image.remove({_id:id},function(err,doc){
+            if(err) {
+              console.log(err);
+              res.status(200).send({
+                result:errConfig.serverErr
+              });
+            } else {
+              console.log(doc)
+              res.status(200).send({
+                result:errConfig.success,
+                data:doc
+              });
+            }
+          })
+        }else{
+          res.status(200).send({
+            result:errConfig.serverErr
+          });
+        }
+      }).catch(function(err){
+        res.status(200).send({
+          result:errConfig.serverErr
+        });
+      })
+
+      
 		})
 	}else{
 		res.status(200).send({
