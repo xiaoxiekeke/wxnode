@@ -47,30 +47,30 @@ exports.hasToken=function(req,res,next) {
 exports.hasUserToken=function(req,res,next) {
 	// var accessToken=req.body.accessToken
 	var sessionid=req.headers.sessionid
-	// next()
-	if(!sessionid){
-	  res.status(200).send({
-			result:errConfig.nologin,
-		});
-		return
-	}
-	Session.findOne({
-		sessionid:sessionid
-	}).exec().then(function(result){
-		if(!result){
-			res.status(200).send({
-				result:errConfig.nologin
-			});
-			return
-		}else{
-			next()
-		}
-	},function(err){
-		res.status(200).send({
-			result:errConfig.serverErr
-		});
-		return
-	})
+	next()
+	// if(!sessionid){
+	//   res.status(200).send({
+	// 		result:errConfig.nologin,
+	// 	});
+	// 	return
+	// }
+	// Session.findOne({
+	// 	sessionid:sessionid
+	// }).exec().then(function(result){
+	// 	if(!result){
+	// 		res.status(200).send({
+	// 			result:errConfig.nologin
+	// 		});
+	// 		return
+	// 	}else{
+	// 		next()
+	// 	}
+	// },function(err){
+	// 	res.status(200).send({
+	// 		result:errConfig.serverErr
+	// 	});
+	// 	return
+	// })
 
 }
 
