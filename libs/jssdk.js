@@ -116,7 +116,7 @@ JSSDK.prototype={
 	},
 }
 
-const jssdk=new JSSDK('wxeee44dbd49e6139a','daad8a1466f76f6c6e98601d6179ec3b')
+const jssdk=new JSSDK('wx7adbafc7365a8cf9','37bfa52feb4e4f942d7d4ebb8d7e17ba')
 
 
 module.exports=jssdk
