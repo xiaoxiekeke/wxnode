@@ -815,7 +815,7 @@ router.post('/test',function (req, res) {
 router.post('/chapter/list/test', middleware.hasUserToken,function (req, res) {
   Chapter.find().sort({'meta.createAt':1}).exec().then(function(result){
     var num=0
-    for (var i = 0; i <= 10000; i++) {
+    for (var i = 0; i <= 50000; i++) {
       num=num+i
     };
 
