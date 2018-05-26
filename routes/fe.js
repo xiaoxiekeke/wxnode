@@ -814,10 +814,11 @@ router.post('/test',function (req, res) {
 
 router.post('/chapter/list/test', middleware.hasUserToken,function (req, res) {
   Chapter.find().sort({'meta.createAt':1}).exec().then(function(result){
-    var num
+    var num=0
     for (var i = 0; i <= 10000; i++) {
-      num+=i
+      num=num+i
     };
+
     res.status(200).send({
       result:errConfig.success,
       data:{
