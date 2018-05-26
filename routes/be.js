@@ -857,9 +857,9 @@ router.post('/chapter/list', middleware.hasToken,function (req, res) {
 		Chapter.find().sort({'meta.createAt':-1}).exec().then(function(result){
 			res.status(200).send({
 				result:errConfig.success,
-				// data:{
-				// 	list:result
-				// }
+				data:{
+					list:result
+				}
 			});
 		},function(err){
 	  	res.status(200).send({
