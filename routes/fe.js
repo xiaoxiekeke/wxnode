@@ -808,7 +808,7 @@ router.post('/default/list', middleware.hasUserToken,function (req, res) {
 //test
 router.post('/test',function (req, res) {
   res.status(200).send({
-    result:errConfig.success
+    result:""
   });
 });
 
