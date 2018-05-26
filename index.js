@@ -13,8 +13,8 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 // 使用mongoose连接mongodb
 var mongoose =require('mongoose')
 
-var dbconfig ='mongodb://miniGame-runner:1qaz2wsx@localhost:19999/miniGame'
-// var dbconfig ='mongodb://localhost/minigame-explore'
+// var dbconfig ='mongodb://miniGame-runner:1qaz2wsx@localhost:19999/miniGame'
+var dbconfig ='mongodb://localhost/minigame-explore'
 mongoose.connect(dbconfig);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
