@@ -6,7 +6,6 @@ var http=require('http');
 var request = require('request');  
 var router = express.Router();
 var crypto = require('crypto');
-var request= require('request');
 var fs = require('fs');
 const jsSdk = require('../libs/jssdk')
 const errConfig = require('../libs/error.config')
@@ -32,6 +31,7 @@ var Event=mongoose.model('Event')
 var Option=mongoose.model('Option')
 var Topup=mongoose.model('Topup')
 var Default=mongoose.model('Default')
+var Timeline=mongoose.model('Timeline')
 var Session=mongoose.model('Session')
 
 // Array.prototype.indexOf = function(val) {  
@@ -801,6 +801,95 @@ router.post('/default/list', middleware.hasUserToken,function (req, res) {
     res.status(200).send({
       result:errConfig.serverErr
     });
+  })
+});
+
+router.post('/getwxacord', middleware.hasUserToken,function (req, res) {
+    var id = req.body.id;
+    jsSdk.getAccessToken(function(err,accessToken){
+      if(err){
+        res.status(200).send({
+          result:errConfig.serverErr
+        });
+        return;
+      }
+      var requestData={
+        scene:id,
+        width:136,
+        is_hyaline:true
+      }
+      var readStream=request({
+        url: "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken,
+        method: "POST",
+        body: JSON.stringify(requestData)
+      })
+      var path='./Images/'+id+'.png';
+      var writerStream = fs.createWriteStream(path);
+      readStream.pipe(writerStream); 
+      writerStream.on('finish', function() {
+        var path='Images/'+id+'.png'
+        User.findByIdAndUpdate(id,{'$set':{'wxacodeUrl':path}},{
+          new: true
+        },function(err,doc){
+          if(err){
+            res.status(200).send({
+              result:errConfig.serverErr
+            });
+          }else{
+            res.status(200).send({
+              result:errConfig.success,
+              data:doc
+            });
+          }
+        })
+        console.log("写入完成。");
+      });
+      writerStream.on('error', function(err){
+         res.status(200).send({
+           result:errConfig.serverErr
+         });
+      });
+
+   })
+});
+
+router.post('/timelinemedal/list', middleware.hasUserToken,function (req, res) {
+  var inviterId = req.body.inviterId;
+  Timeline.find({inviterId:inviterId}).populate('inviteesId','nickName').exec().then(function(result){
+    res.status(200).send({
+      result:errConfig.success,
+      data:result
+    });
+  },function(err){
+    res.status(200).send({
+      result:errConfig.serverErr
+    });
+  })
+});
+
+router.post('/timelinemedal/add', middleware.hasUserToken,function (req, res) {
+  var medal=req.body.medal
+  var inviterId = req.body.inviterId;
+  var inviteesId = req.body.inviteesId;
+  var timeline=new Timeline({
+    medal:medal,
+    inviterId:inviterId,
+    inviteesId:inviteesId
+  })
+  timeline.save(function(err,doc){
+    if(err) {
+      console.log(err);
+      res.status(200).send({
+        result:errConfig.serverErr
+      });
+    } else {
+      res.status(200).send({
+        result:errConfig.success,
+        data:{
+          accessToken:doc
+        }
+      });
+    }
   })
 });
 

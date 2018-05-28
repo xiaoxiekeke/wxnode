@@ -9,6 +9,7 @@ var UserSchema = new mongoose.Schema({
   amount:Number,
   gender:Number,
   avatarUrl:String,
+  wxacodeUrl:String,
   hasbanned:Boolean,
   medal:Number,
   optionScore:Number,

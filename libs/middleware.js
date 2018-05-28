@@ -9,6 +9,7 @@ var config=require('./config')
 var Promise=require('bluebird')
 var sha1=require('sha1')
 var uuid=require('uuid')
+var fs=require('fs')
 
 //需要填写你的 Access Key 和 Secret Key
 qiniu.conf.ACCESS_KEY = config.qiniu.AK;
@@ -75,12 +76,15 @@ exports.hasUserToken=function(req,res,next) {
 }
 
 //将图片数据同步到七牛
-exports.saveToQiniu=function(data,format){
+exports.saveToQiniu=function(data,format,folder){
 	var key=uuid.v4()
 	var options = {
     returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}'
   }
   key+='.'+format
+  if (folder) {
+  	key=folder+'/'+key
+  };
   var putPolicy = new qiniu.rs.PutPolicy({scope:'wxapplet-mysteryexplore-files:' + key})
 	var config = new qiniu.conf.Config();
 	config.zone = qiniu.zone.Zone_z0;
@@ -101,6 +105,46 @@ exports.saveToQiniu=function(data,format){
 		  } else {
 		  	resolve(respBody)
 		    console.log(respInfo.statusCode);
+		  }
+		});
+	})
+}
+
+//将图片数据同步到七牛
+exports.saveStreamToQiniu=function(data,format,folder){
+	var key=uuid.v4()
+	var options = {
+    returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}'
+  }
+  key+='.'+format
+  if (folder) {
+  	key=folder+'/'+key
+  };
+  var putPolicy = new qiniu.rs.PutPolicy({scope:'wxapplet-mysteryexplore-files:' + key})
+	var config = new qiniu.conf.Config();
+	config.zone = qiniu.zone.Zone_z0;
+	var uploadToken=putPolicy.uploadToken(mac)
+	var formUploader = new qiniu.form_up.FormUploader(config);
+	var putExtra = new qiniu.form_up.PutExtra();
+
+	return new Promise(function(resolve,reject){
+		formUploader.putStream(uploadToken, key, stream, putExtra, function(respErr,
+		  respBody, respInfo) {
+		  if (respErr) {
+		    // throw respErr;
+		    console.log("respErr")
+		    console.log(respErr)
+		    reject(respErr)
+		    return
+
+		  }
+		  if (respInfo.statusCode == 200) {
+		  	console.log("200",respBody);
+		    resolve(respBody)
+		  } else {
+		  	console.log(respBody);
+		  	resolve(respBody)
+		    
 		  }
 		});
 	})
