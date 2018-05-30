@@ -2,7 +2,7 @@
 
 module.exports={
   qiniu:{
-    image:'http://applet-mystery.xiaoxiekeke.com/',
+    image:'https://applet-mystery.xiaoxiekeke.com/',
     AK:'ZZD0yVTPScCs6G7RPZM97F10kbIDo2-D7vif0Oix',
     SK:'a6f82xK08hMRs2wnFQdswe15CWzbtGLOUilEQDcn' 
   },
